@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan Pemasangan</title>
+    <style>
+        body {
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            width: 50%;
+            margin: auto;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        input, select, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: none;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Laporan Pemasangan</h2>
+        <form onsubmit="kirimWhatsApp(event)">
+            <label for="tanggal">Tanggal:</label>
+            <input type="date" id="tanggal" required><br><br>
+
+            <label for="paket">Paket:</label>
+            <select id="paket" required>
+                <option value="subsidi">Ftth Subsidi</option>
+                <option value="non subsidi">Ftth Non Subsidi</option>
+            </select><br><br>
+
+            <label for="team">Team:</label>
+            <input type="text" id="team" required><br><br>
+
+            <label for="nama">Nama:</label>
+            <input type="text" id="nama" required><br><br>
+
+            <label for="id_member">ID Member:</label>
+            <input type="text" id="id_member" required><br><br>
+
+            <label for="ip_onu">IP ONU:</label>
+            <input type="text" id="ip_onu" required><br><br>
+
+            <label for="radio_signal">Radio/Signal:</label>
+            <input type="text" id="radio_signal" required><br><br>
+
+            <label for="alamat">Alamat:</label>
+            <textarea id="alamat" required></textarea><br><br>
+
+            <label for="no_hp">No HP:</label>
+            <input type="text" id="no_hp" required><br><br>
+
+            <label for="bayaran">Bayaran:</label>
+            <input type="number" step="0.01" id="bayaran" required><br><br>
+
+            <label for="total_pemasangan">Total Pemasangan:</label>
+            <input type="number" id="total_pemasangan" required><br><br>
+
+            <label for="rincian_pembayaran">Rincian Pembayaran:</label>
+            <select id="rincian_pembayaran" required>
+                <option value="cash">Cash</option>
+                <option value="tf">Transfer (TF)</option>
+            </select><br><br>
+
+            <label for="total_uang_keseluruhan">Total Uang Keseluruhan:</label>
+            <input type="number" step="0.01" id="total_uang_keseluruhan" required><br><br>
+
+            <label for="total_tf">Total TF:</label>
+            <input type="number" step="0.01" id="total_tf" value="0"><br><br>
+
+            <label for="total_cash">Total Uang Cash Keseluruhan:</label>
+            <input type="number" step="0.01" id="total_cash" required><br><br>
+
+            <button type="submit">Kirim ke WhatsApp</button>
+        </form>
+    </div>
+
+    <script>
+        function kirimWhatsApp(event) {
+            event.preventDefault(); // Mencegah pengiriman form standar
+            
+            // Ambil nomor tujuan WhatsApp
+            let nomorWA = "6285892782997"; // Ganti dengan nomor yang dituju
+
+            // Ambil nilai dari form
+            let tanggal = document.getElementById("tanggal").value;
+            let paket = document.getElementById("paket").value;
+            let team = document.getElementById("team").value;
+            let nama = document.getElementById("nama").value;
+            let id_member = document.getElementById("id_member").value;
+            let ip_onu = document.getElementById("ip_onu").value;
+            let radio_signal = document.getElementById("radio_signal").value;
+            let alamat = document.getElementById("alamat").value;
+            let no_hp = document.getElementById("no_hp").value;
+            let bayaran = document.getElementById("bayaran").value;
+            let total_pemasangan = document.getElementById("total_pemasangan").value;
+            let rincian_pembayaran = document.getElementById("rincian_pembayaran").value;
+            let total_uang_keseluruhan = document.getElementById("total_uang_keseluruhan").value;
+            let total_tf = document.getElementById("total_tf").value;
+            let total_cash = document.getElementById("total_cash").value;
+
+            // Format pesan WhatsApp
+            let pesan = `*Laporan Pemasangan:*
+            \n📅 *Tanggal:* ${tanggal}
+            \n📦 *Paket:* ${paket}
+            \n👷‍♂️ *Team:* ${team}
+            \n👤 *Nama:* ${nama}
+            \n🆔 *ID Member:* ${id_member}
+            \n🌐 *IP ONU:* ${ip_onu}
+            \n📡 *Radio/Signal:* ${radio_signal}
+            \n🏠 *Alamat:* ${alamat}
+            \n📞 *No HP:* ${no_hp}
+            \n💰 *Bayaran:* Rp${bayaran}
+            \n🔢 *Total Pemasangan:* ${total_pemasangan}
+            \n💳 *Rincian Pembayaran:* ${rincian_pembayaran}
+            \n💲 *Total Uang Keseluruhan:* Rp${total_uang_keseluruhan}
+            \n🏦 *Total TF:* Rp${total_tf}
+            \n💵 *Total Cash:* Rp${total_cash}`;
+
+            // Encode pesan agar bisa dikirim melalui URL
+            let encodedPesan = encodeURIComponent(pesan);
+            let urlWA = `https://api.whatsapp.com/send?phone=${nomorWA}&text=${encodedPesan}`;
+
+            // Redirect ke WhatsApp
+            window.open(urlWA, "_blank");
+        }
+    </script>
+
+</body>
+</html>

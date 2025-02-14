@@ -19,6 +19,7 @@
             width: 50%;
             margin: auto;
             box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            position: relative;
         }
         input, select, textarea, button {
             width: 100%;
@@ -39,83 +40,82 @@
             border-bottom: 1px solid white;
             padding-bottom: 10px;
             margin-bottom: 10px;
+            position: relative;
+        }
+        .remove-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: none;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            font-size: 18px;
+            cursor: pointer;
         }
     </style>
 </head>
 <body>
-
     <div class="container">
         <h2>Laporan Pemasangan</h2>
         <h2>Island.Net</h2>
-
         <label for="tanggal">Tanggal:</label>
         <input type="date" id="tanggal" required><br>
-
         <div id="pemasangan-container"></div>
         <button type="button" onclick="tambahPemasangan()">Tambah Pemasangan</button>
-        
         <h3>Rincian Pembayaran</h3>
         <label for="total_uang_keseluruhan">Total Uang Keseluruhan:</label>
-        <input type="number" id="total_uang_keseluruhan" required><br>
-
+        <input type="text" id="total_uang_keseluruhan" required><br>
         <label for="total_tf">Total TF:</label>
-        <input type="number" id="total_tf" required><br>
-
+        <input type="text" id="total_tf" required><br>
         <label for="total_cash">Total Uang Cash Keseluruhan:</label>
-        <input type="number" id="total_cash" required><br><br>
-
+        <input type="text" id="total_cash" required><br><br>
         <button type="button" onclick="kirimWhatsApp()">Kirim ke WhatsApp</button>
     </div>
-
     <script>
         function tambahPemasangan() {
             let container = document.getElementById("pemasangan-container");
             let div = document.createElement("div");
             div.classList.add("pemasangan-item");
             let index = container.children.length + 1;
-
             div.innerHTML = `
+                <button class="remove-btn" onclick="hapusPemasangan(this)">X</button>
                 <h4>Pemasangan ${index}</h4>
                 <label>Nama Team:</label>
                 <input type="text" class="nama_team" required><br>
-                
                 <label>Jenis Paket:</label>
                 <select class="jenis_paket">
                     <option value="Ftth Subsidi">Ftth Subsidi</option>
                     <option value="Ftth Non Subsidi">Ftth Non Subsidi</option>
                 </select><br>
-                
                 <label>Nama:</label>
                 <input type="text" class="nama" required><br>
-                
                 <label>ID Member:</label>
                 <input type="text" class="id_member" required><br>
-
                 <label>IP ONU:</label>
                 <input type="text" class="ip_onu" required><br>
-
                 <label>Radio/Signal:</label>
                 <input type="text" class="radio_signal" required><br>
-
                 <label>Alamat:</label>
                 <textarea class="alamat" required></textarea><br>
-
                 <label>No HP:</label>
                 <input type="text" class="no_hp" required><br>
-
                 <label>Bayaran:</label>
                 <input type="number" class="bayaran" required><br>
-
                 <label>Jenis Pembayaran:</label>
                 <select class="jenis_pembayaran">
                     <option value="Cash">Cash</option>
                     <option value="TF">TF</option>
+                    <option value="Cash+TF">Cash+TF</option>
                 </select><br>
-
             `;
             container.appendChild(div);
         }
-
+        function hapusPemasangan(button) {
+            button.parentElement.remove();
+        }
         function kirimWhatsApp() {
             let nomorWA = "6285892782997";
             let tanggal = document.getElementById("tanggal").value;
@@ -123,7 +123,6 @@
             let totalUangKeseluruhan = document.getElementById("total_uang_keseluruhan").value;
             let totalTF = document.getElementById("total_tf").value;
             let totalCash = document.getElementById("total_cash").value;
-
             let pemasanganContainer = document.getElementById("pemasangan-container");
             let pemasanganData = "";
             let pemasanganItems = pemasanganContainer.getElementsByClassName("pemasangan-item");
@@ -138,11 +137,9 @@
                 let no_hp = pemasanganItems[i].getElementsByClassName("no_hp")[0].value;
                 let bayaran = pemasanganItems[i].getElementsByClassName("bayaran")[0].value;
                 let jenis_pembayaran = pemasanganItems[i].getElementsByClassName("jenis_pembayaran")[0].value;
-
-                pemasanganData += `\n${i+1}. *Nama Team:* ${nama_team}\n   *Jenis Paket:* ${jenis_paket}\n   *Nama:* ${nama}\n   *ID Member:* ${id_member}\n   *IP ONU:* ${ip_onu}\n   *Radio/Signal:* ${radio_signal}\n   *Alamat:* ${alamat}\n   *No HP:* ${no_hp}\n   *Bayaran:* Rp${bayaran}\n   *Jenis Pembayaran:* ${jenis_pembayaran}\n`;
+                pemasanganData += `\n${i+1}. *Nama Team:* ${nama_team}\n   *Jenis Paket:* ${jenis_paket}\n   *Nama:* ${nama}\n   *Bayaran:* Rp${bayaran}\n   *Jenis Pembayaran:* ${jenis_pembayaran}\n`;
             }
-
-            let pesan = `*Laporan Pemasangan*\n*${formattedTanggal}*\n${pemasanganData}\n *Total Uang Keseluruhan :* Rp${totalUangKeseluruhan}\n *Total TF :* Rp${totalTF}\n *Total Uang Cash Keseluruhan :* Rp${totalCash}`;
+            let pesan = `*Laporan Pemasangan*\n*${formattedTanggal}*\n${pemasanganData}`;
             let encodedPesan = encodeURIComponent(pesan);
             window.open(`https://api.whatsapp.com/send?phone=${nomorWA}&text=${encodedPesan}`, "_blank");
         }

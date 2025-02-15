@@ -55,6 +55,11 @@
             font-size: 18px;
             cursor: pointer;
         }
+        .footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #ddd;
+        }
     </style>
 </head>
 <body>
@@ -73,6 +78,7 @@
         <label for="total_cash">Total Uang Cash Keseluruhan:</label>
         <input type="text" id="total_cash" required><br><br>
         <button type="button" onclick="kirimWhatsApp()">Kirim ke WhatsApp</button>
+        <p>Created ©ArieID2025 | All rights reserved | Developed by ArieID</p>
     </div>
     <script>
         function tambahPemasangan() {
@@ -103,7 +109,7 @@
                 <label>No HP:</label>
                 <input type="text" class="no_hp" required><br>
                 <label>Bayaran:</label>
-                <input type="number" class="bayaran" required><br>
+                <input type="text" class="bayaran" required><br>
                 <label>Jenis Pembayaran:</label>
                 <select class="jenis_pembayaran">
                     <option value="Cash">Cash</option>

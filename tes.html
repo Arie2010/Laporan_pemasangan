@@ -149,7 +149,9 @@
             let totalUangKeseluruhan = document.getElementById("total_uang_keseluruhan").value;
             let totalTF = document.getElementById("total_tf").value;
             let totalCash = document.getElementById("total_cash").value;
-            let pesan = `*Laporan Pemasangan*\n*${formattedTanggal}*\n\n*Total Uang Keseluruhan:* Rp${totalUangKeseluruhan}\n*Total TF:* Rp${totalTF}\n*Total Cash:* Rp${totalCash}`;
+            let pemasanganData = "";
+            
+            let pesan = `*Laporan Pemasangan*\n*${formattedTanggal}*\n\n${pemasanganData}*Total Uang Keseluruhan:* Rp${totalUangKeseluruhan}\n*Total TF:* Rp${totalTF}\n*Total Cash:* Rp${totalCash}`;
             let encodedPesan = encodeURIComponent(pesan);
             window.open(`https://api.whatsapp.com/send?phone=${nomorWA}&text=${encodedPesan}`, "_blank");
         }

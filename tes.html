@@ -101,12 +101,13 @@
                 <input type="text" class="nama" required><br>
                 <label>ID Member:</label>
                 <input type="text" class="id_member" required><br>
-                <label>IP ONU:</label>
-                <select class="ip_onu" onchange="toggleIPInput(this)">
-                    <option value="">Pilih IP</option>
-                    <option value="IP ONU">IP ONU</option>
-                    <option value="IP Router">IP Router</option>
+                <label>Pilih Jenis IP:</label>
+                <select class="jenis_ip" onchange="toggleIP(this)">
+                    <option value="ONU">IP ONU</option>
+                    <option value="Router">IP Router</option>
                 </select><br>
+                <label>IP:</label>
+                <input type="text" class="ip_address" required><br>
                 <label>Radio/Signal:</label>
                 <input type="text" class="radio_signal" required><br>
                 <label>Alamat:</label>

@@ -55,11 +55,6 @@
             font-size: 14px;
             cursor: pointer;
         }
-        .footer {
-            margin-top: 20px;
-            font-size: 14px;
-            color: #ddd;
-        }
     </style>
 </head>
 <body>
@@ -78,7 +73,6 @@
         <label for="total_cash">Total Uang Cash Keseluruhan:</label>
         <input type="text" id="total_cash" required><br><br>
         <button type="button" onclick="kirimWhatsApp()">Kirim ke WhatsApp</button>
-        <p>Created ©ArieID2025 | All rights reserved | Developed by ArieID</p>
     </div>
     <script>
         function tambahPemasangan() {
@@ -101,8 +95,13 @@
                 <input type="text" class="nama" required><br>
                 <label>ID Member:</label>
                 <input type="text" class="id_member" required><br>
-                <label>IP ONU:</label>
-                <input type="text" class="ip_onu" required><br>
+                <label>IP:</label>
+                <select class="ip_onu" onchange="tampilkanInputIP(this)">
+                    <option value="">Pilih</option>
+                    <option value="IP ONU">IP ONU</option>
+                    <option value="IP Router">IP Router</option>
+                </select>
+                <input type="text" class="ip_input" style="display:none;" placeholder="Masukkan IP"><br>
                 <label>Radio/Signal:</label>
                 <input type="text" class="radio_signal" required><br>
                 <label>Alamat:</label>
@@ -120,38 +119,18 @@
             `;
             container.appendChild(div);
         }
+
         function hapusPemasangan(button) {
             button.parentElement.remove();
         }
-        function kirimWhatsApp() {
-            let nomorWA = "6285892782997";
-            let tanggal = document.getElementById("tanggal").value;
-            let formattedTanggal = new Date(tanggal).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-            let totalUangKeseluruhan = document.getElementById("total_uang_keseluruhan").value;
-            let totalTF = document.getElementById("total_tf").value;
-            let totalCash = document.getElementById("total_cash").value;
-            let pemasanganContainer = document.getElementById("pemasangan-container");
-            let pemasanganData = "";
-            let pemasanganItems = pemasanganContainer.getElementsByClassName("pemasangan-item");
-            
-            for (let i = 0; i < pemasanganItems.length; i++) {
-                let nama_team = pemasanganItems[i].getElementsByClassName("nama_team")[0].value;
-                let jenis_paket = pemasanganItems[i].getElementsByClassName("jenis_paket")[0].value;
-                let nama = pemasanganItems[i].getElementsByClassName("nama")[0].value;
-                let id_member = pemasanganItems[i].getElementsByClassName("id_member")[0].value;
-                let ip_onu = pemasanganItems[i].getElementsByClassName("ip_onu")[0].value;
-                let radio_signal = pemasanganItems[i].getElementsByClassName("radio_signal")[0].value;
-                let alamat = pemasanganItems[i].getElementsByClassName("alamat")[0].value;
-                let no_hp = pemasanganItems[i].getElementsByClassName("no_hp")[0].value;
-                let bayaran = pemasanganItems[i].getElementsByClassName("bayaran")[0].value;
-                let jenis_pembayaran = pemasanganItems[i].getElementsByClassName("jenis_pembayaran")[0].value;
-                
-                pemasanganData += `${i + 1}. *Nama Team:* ${nama_team}\n   *Jenis Paket:* ${jenis_paket}\n   *Nama:* ${nama}\n   *ID Member:* ${id_member}\n   *IP ONU:* ${ip_onu}\n   *Radio/Signal:* ${radio_signal}\n   *Alamat:* ${alamat}\n   *No HP:* ${no_hp}\n   *Bayaran:* Rp${bayaran}\n   *Jenis Pembayaran:* ${jenis_pembayaran}\n\n`;
-            }
 
-            let pesan = `*Laporan Pemasangan*\n*${formattedTanggal}*\n\n${pemasanganData}*Total Uang Keseluruhan:* Rp${totalUangKeseluruhan}\n*Total TF:* Rp${totalTF}\n*Total Cash:* Rp${totalCash}`;
-            let encodedPesan = encodeURIComponent(pesan);
-            window.open(`https://api.whatsapp.com/send?phone=${nomorWA}&text=${encodedPesan}`, "_blank");
+        function tampilkanInputIP(select) {
+            let input = select.nextElementSibling;
+            if (select.value) {
+                input.style.display = "block";
+            } else {
+                input.style.display = "none";
+            }
         }
     </script>
 </body>

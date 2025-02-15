@@ -60,9 +60,6 @@
             font-size: 14px;
             color: #ddd;
         }
-        .ip_input {
-            display: none;
-        }
     </style>
 </head>
 <body>
@@ -110,9 +107,9 @@
                     <option value="ONU">IP ONU</option>
                     <option value="Router">IP Router</option>
                 </select><br>
-                <div class="ip_input">
+                <div class="ip_input" style="display: none;">
                     <label>IP:</label>
-                    <input type="text" class="ip_address"><br>
+                    <input type="text" class="ip_address" required><br>
                 </div>
                 <label>Radio/Signal:</label>
                 <input type="text" class="radio_signal" required><br>
@@ -131,11 +128,9 @@
             `;
             container.appendChild(div);
         }
-
         function hapusPemasangan(button) {
             button.parentElement.remove();
         }
-
         function toggleIP(selectElement) {
             let parent = selectElement.parentElement;
             let ipInputDiv = parent.querySelector(".ip_input");
@@ -146,6 +141,17 @@
                 ipInputDiv.style.display = "none";
                 ipInputDiv.querySelector(".ip_address").value = "";
             }
+        }
+        function kirimWhatsApp() {
+            let nomorWA = "6285892782997";
+            let tanggal = document.getElementById("tanggal").value;
+            let formattedTanggal = new Date(tanggal).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+            let totalUangKeseluruhan = document.getElementById("total_uang_keseluruhan").value;
+            let totalTF = document.getElementById("total_tf").value;
+            let totalCash = document.getElementById("total_cash").value;
+            let pesan = `*Laporan Pemasangan*\n*${formattedTanggal}*\n\n*Total Uang Keseluruhan:* Rp${totalUangKeseluruhan}\n*Total TF:* Rp${totalTF}\n*Total Cash:* Rp${totalCash}`;
+            let encodedPesan = encodeURIComponent(pesan);
+            window.open(`https://api.whatsapp.com/send?phone=${nomorWA}&text=${encodedPesan}`, "_blank");
         }
     </script>
 </body>

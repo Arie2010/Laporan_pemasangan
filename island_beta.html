@@ -118,44 +118,44 @@
         }
 
         function kirimWhatsApp() {
-            let nomorWA = "6285892782997";
-            let tanggal = document.getElementById("tanggal").value;
-            let formattedTanggal = new Date(tanggal).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-            let totalUangKeseluruhan = document.getElementById("total_uang_keseluruhan").value;
-            let totalTF = document.getElementById("total_tf").value;
-            let totalCash = document.getElementById("total_cash").value;
-            let pemasanganContainer = document.getElementById("pemasangan-container");
-            let pemasanganItems = pemasanganContainer.getElementsByClassName("pemasangan-item");
+    let nomorWA = "6285892782997";
+    let tanggal = document.getElementById("tanggal").value;
+    let formattedTanggal = new Date(tanggal).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+    let totalUangKeseluruhan = document.getElementById("total_uang_keseluruhan").value;
+    let totalTF = document.getElementById("total_tf").value;
+    let totalCash = document.getElementById("total_cash").value;
+    let pemasanganContainer = document.getElementById("pemasangan-container");
+    let pemasanganItems = pemasanganContainer.getElementsByClassName("pemasangan-item");
 
-            let pesan = `*Laporan Pemasangan*\n*${formattedTanggal}*\n`;
+    let pesan = `*Laporan Pemasangan*\n*${formattedTanggal}*\n\n`; // Tambahkan enter di bawah tanggal
 
-            for (let i = 0; i < pemasanganItems.length; i++) {
-                let nama_team = pemasanganItems[i].getElementsByClassName("nama_team")[0].value || "";
-                let jenis_paket = pemasanganItems[i].getElementsByClassName("jenis_paket")[0].value || "";
-                let nama = pemasanganItems[i].getElementsByClassName("nama")[0].value || "";
-                let id_member = pemasanganItems[i].getElementsByClassName("id_member")[0].value || "";
-                let ip_onu = pemasanganItems[i].getElementsByClassName("ip_onu")[0].value || "";
-                let ip_router = pemasanganItems[i].getElementsByClassName("ip_router")[0].value || "";
-                let radio_signal = pemasanganItems[i].getElementsByClassName("radio_signal")[0].value || "";
-                let alamat = pemasanganItems[i].getElementsByClassName("alamat")[0].value || "";
-                let no_hp = pemasanganItems[i].getElementsByClassName("no_hp")[0].value || "";
-                let bayaran = pemasanganItems[i].getElementsByClassName("bayaran")[0].value || "";
+    for (let i = 0; i < pemasanganItems.length; i++) {
+        let nama_team = pemasanganItems[i].getElementsByClassName("nama_team")[0].value || "";
+        let jenis_paket = pemasanganItems[i].getElementsByClassName("jenis_paket")[0].value || "";
+        let nama = pemasanganItems[i].getElementsByClassName("nama")[0].value || "";
+        let id_member = pemasanganItems[i].getElementsByClassName("id_member")[0].value || "";
+        let ip_onu = pemasanganItems[i].getElementsByClassName("ip_onu")[0].value || "";
+        let ip_router = pemasanganItems[i].getElementsByClassName("ip_router")[0].value || "";
+        let radio_signal = pemasanganItems[i].getElementsByClassName("radio_signal")[0].value || "";
+        let alamat = pemasanganItems[i].getElementsByClassName("alamat")[0].value || "";
+        let no_hp = pemasanganItems[i].getElementsByClassName("no_hp")[0].value || "";
+        let bayaran = pemasanganItems[i].getElementsByClassName("bayaran")[0].value || "";
 
-                let itemPesan = `${i + 1}. *Nama:* ${nama}\n   *ID Member:* ${id_member}\n`;
-                if (ip_onu) itemPesan += `   *IP ONU:* ${ip_onu}\n`;
-                if (ip_router) itemPesan += `   *IP Router:* ${ip_router}\n`;
-                if (radio_signal) itemPesan += `   *Radio/Signal:* ${radio_signal}\n`;
-                if (alamat) itemPesan += `   *Alamat:* ${alamat}\n`;
-                if (no_hp) itemPesan += `   *No HP:* ${no_hp}\n`;
-                if (bayaran) itemPesan += `   *Bayaran:* Rp${bayaran}\n\n`;
+        let itemPesan = `${i + 1}. *Nama:* ${nama}\n   *ID Member:* ${id_member}\n`;
+        if (ip_onu) itemPesan += `   *IP ONU:* ${ip_onu}\n`;
+        if (ip_router) itemPesan += `   *IP Router:* ${ip_router}\n`;
+        if (radio_signal) itemPesan += `   *Radio/Signal:* ${radio_signal}\n`;
+        if (alamat) itemPesan += `   *Alamat:* ${alamat}\n`;
+        if (no_hp) itemPesan += `   *No HP:* ${no_hp}\n`;
+        if (bayaran) itemPesan += `   *Bayaran:* Rp${bayaran}\n\n`;
 
-                pesan += itemPesan;
-            }
+        pesan += itemPesan;
+    }
 
-            pesan += `*Total Uang Keseluruhan:* Rp${totalUangKeseluruhan}\n*Total TF:* Rp${totalTF}\n*Total Cash:* Rp${totalCash}`;
-            let encodedPesan = encodeURIComponent(pesan);
-            window.open(`https://api.whatsapp.com/send?phone=${nomorWA}&text=${encodedPesan}`, "_blank");
-        }
+    pesan += `*Total Uang Keseluruhan:* Rp${totalUangKeseluruhan}\n*Total TF:* Rp${totalTF}\n*Total Cash:* Rp${totalCash}`;
+    let encodedPesan = encodeURIComponent(pesan);
+    window.open(`https://api.whatsapp.com/send?phone=${nomorWA}&text=${encodedPesan}`, "_blank");
+}
     </script>
 </body>
 </html>

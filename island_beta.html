@@ -122,8 +122,7 @@
             button.parentElement.remove();
         }
 
-        function kirimWhatsApp() {
-    let nomorWA = "6285892782997";
+        function kirimWhatsAppGrup() {
     let tanggal = document.getElementById("tanggal").value;
     let formattedTanggal = new Date(tanggal).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
     let totalUangKeseluruhan = document.getElementById("total_uang_keseluruhan").value;
@@ -135,24 +134,12 @@
     let pesan = `*Laporan Pemasangan*\n*${formattedTanggal}*\n\n`;
 
     for (let i = 0; i < pemasanganItems.length; i++) {
-        let nama_team = pemasanganItems[i].querySelector(".nama_team").value || "";
-        let jenis_paket = pemasanganItems[i].querySelector(".jenis_paket").value || "";
         let nama = pemasanganItems[i].querySelector(".nama").value || "";
         let id_member = pemasanganItems[i].querySelector(".id_member").value || "";
-        let ip_onu = pemasanganItems[i].querySelector(".ip_onu").value || "";
-        let ip_router = pemasanganItems[i].querySelector(".ip_router").value || "";
-        let radio_signal = pemasanganItems[i].querySelector(".radio_signal").value || "";
-        let alamat = pemasanganItems[i].querySelector(".alamat").value || "";
-        let no_hp = pemasanganItems[i].querySelector(".no_hp").value || "";
         let bayaran = pemasanganItems[i].querySelector(".bayaran").value || "";
         let jenis_pembayaran = pemasanganItems[i].querySelector("#jenis_pembayaran").value || "";
 
         let itemPesan = `${i + 1}. *Nama:* ${nama}\n   *ID Member:* ${id_member}\n`;
-        if (ip_onu) itemPesan += `   *IP ONU:* ${ip_onu}\n`;
-        if (ip_router) itemPesan += `   *IP Router:* ${ip_router}\n`;
-        if (radio_signal) itemPesan += `   *Radio/Signal:* ${radio_signal}\n`;
-        if (alamat) itemPesan += `   *Alamat:* ${alamat}\n`;
-        if (no_hp) itemPesan += `   *No HP:* ${no_hp}\n`;
         if (bayaran) itemPesan += `   *Bayaran:* Rp${bayaran}\n`;
         if (jenis_pembayaran) itemPesan += `   *Jenis Pembayaran:* ${jenis_pembayaran}\n\n`;
 
@@ -160,9 +147,11 @@
     }
 
     pesan += `*Total Uang Keseluruhan:* Rp${totalUangKeseluruhan}\n*Total TF:* Rp${totalTF}\n*Total Cash:* Rp${totalCash}`;
+
     let encodedPesan = encodeURIComponent(pesan);
-    window.open(`https://api.whatsapp.com/send?phone=${nomorWA}&text=${encodedPesan}`, "_blank");
+    window.open(`https://wa.me/?text=${encodedPesan}`, "_blank");
 }
+
 
     </script>
 </body>

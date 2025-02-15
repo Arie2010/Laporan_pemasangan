@@ -145,7 +145,7 @@
                 let bayaran = pemasanganItems[i].getElementsByClassName("bayaran")[0].value;
                 let jenis_pembayaran = pemasanganItems[i].getElementsByClassName("jenis_pembayaran")[0].value;
                 
-                pemasanganData += `${i + 1}. Nama Team:** ${nama_team}\n   Jenis Paket:** ${jenis_paket}\n   Nama:** ${nama}\n   ID Member:** ${id_member}\n   IP ONU:** ${ip_onu}\n   Radio/Signal:** ${radio_signal}\n   Alamat:** ${alamat}\n   No HP:** ${no_hp}\n   Bayaran:** Rp${bayaran}\n   Jenis Pembayaran:** ${jenis_pembayaran}\n\n`;
+                pemasanganData += `${i + 1}. *Nama Team:* ${nama_team}\n   *Jenis Paket:* ${jenis_paket}\n   *Nama:* ${nama}\n   *ID Member:* ${id_member}\n   *IP ONU:* ${ip_onu}\n   *Radio/Signal:* ${radio_signal}\n   *Alamat:* ${alamat}\n   *No HP:* ${no_hp}\n   *Bayaran:* Rp${bayaran}\n   *Jenis Pembayaran:* ${jenis_pembayaran}\n\n`;
             }
 
             let pesan = `*Laporan Pemasangan*\n*${formattedTanggal}*\n${pemasanganData}*Total Uang Keseluruhan:* Rp${totalUangKeseluruhan}\n*Total TF:* Rp${totalTF}\n*Total Cash:* Rp${totalCash}`;

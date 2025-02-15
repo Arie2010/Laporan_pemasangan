@@ -95,7 +95,6 @@
                 <select class="jenis_paket">
                     <option value="Ftth Subsidi">Ftth Subsidi</option>
                     <option value="Ftth Non Subsidi">Ftth Non Subsidi</option>
-                    <option value="Paket UpTo Kolektif">Paket UpTo Kolektif</option>
                 </select><br>
                 <label>Nama:</label>
                 <input type="text" class="nama" required><br>
@@ -149,7 +148,7 @@
                 pemasanganData += ${i + 1}. *Nama Team:* ${nama_team}\n   *Jenis Paket:* ${jenis_paket}\n   *Nama:* ${nama}\n   *ID Member:* ${id_member}\n   *IP ONU:* ${ip_onu}\n   *Radio/Signal:* ${radio_signal}\n   *Alamat:* ${alamat}\n   *No HP:* ${no_hp}\n   *Bayaran:* Rp${bayaran}\n   *Jenis Pembayaran:* ${jenis_pembayaran}\n\n;
             }
 
-            let pesan = *Laporan Pemasangan*\n*${formattedTanggal}*\n\n${pemasanganData}*Total Uang Keseluruhan:* Rp${totalUangKeseluruhan}\n*Total TF:* Rp${totalTF}\n*Total Cash:* Rp${totalCash};
+            let pesan = *Laporan Pemasangan*\n*${formattedTanggal}*\n${pemasanganData}*Total Uang Keseluruhan:* Rp${totalUangKeseluruhan}\n*Total TF:* Rp${totalTF}\n*Total Cash:* Rp${totalCash};
             let encodedPesan = encodeURIComponent(pesan);
             window.open(https://api.whatsapp.com/send?phone=${nomorWA}&text=${encodedPesan}, "_blank");
         }

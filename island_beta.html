@@ -134,21 +134,48 @@
     let pesan = `*Laporan Pemasangan*\n*${formattedTanggal}*\n\n`;
 
     for (let i = 0; i < pemasanganItems.length; i++) {
-        let nama = pemasanganItems[i].querySelector(".nama").value || "-";
-        let id_member = pemasanganItems[i].querySelector(".id_member").value || "-";
-        let ip_onu = pemasanganItems[i].querySelector(".ip_onu").value || "-";
-        let radio_signal = pemasanganItems[i].querySelector(".radio_signal").value || "-";
-        let alamat = pemasanganItems[i].querySelector(".alamat").value || "-";
-        let no_hp = pemasanganItems[i].querySelector(".no_hp").value || "-";
-        let bayaran = pemasanganItems[i].querySelector(".bayaran").value || "-";
-        let jenis_pembayaran = pemasanganItems[i].querySelector("#jenis_pembayaran").value || "-";
+        let itemPesan = `${i + 1}.`;
 
-        let itemPesan = `${i + 1}. *Nama:* ${nama}\n   *ID Member:* ${id_member}\n   *IP ONU:* ${ip_onu}\n   *Radio/Signal:* ${radio_signal}\n   *Alamat:* ${alamat}\n   *No HP:* ${no_hp}\n   *Bayaran:* Rp${bayaran}\n   *Jenis Pembayaran:* ${jenis_pembayaran}\n\n`;
+        let nama = pemasanganItems[i].querySelector(".nama").value.trim();
+        if (nama) itemPesan += ` *Nama:* ${nama}\n`;
 
-        pesan += itemPesan;
+        let id_member = pemasanganItems[i].querySelector(".id_member").value.trim();
+        if (id_member) itemPesan += `   *ID Member:* ${id_member}\n`;
+
+        let ip_onu = pemasanganItems[i].querySelector(".ip_onu").value.trim();
+        if (ip_onu) itemPesan += `   *IP ONU:* ${ip_onu}\n`;
+
+        let ip_router = pemasanganItems[i].querySelector(".ip_router").value.trim();
+        if (ip_router) itemPesan += `   *IP Router:* ${ip_router}\n`;
+
+        let radio_signal = pemasanganItems[i].querySelector(".radio_signal").value.trim();
+        if (radio_signal) itemPesan += `   *Radio/Signal:* ${radio_signal}\n`;
+
+        let alamat = pemasanganItems[i].querySelector(".alamat").value.trim();
+        if (alamat) itemPesan += `   *Alamat:* ${alamat}\n`;
+
+        let no_hp = pemasanganItems[i].querySelector(".no_hp").value.trim();
+        if (no_hp) itemPesan += `   *No HP:* ${no_hp}\n`;
+
+        let bayaran = pemasanganItems[i].querySelector(".bayaran").value.trim();
+        if (bayaran) itemPesan += `   *Bayaran:* Rp${bayaran}\n`;
+
+        let jenis_pembayaran = pemasanganItems[i].querySelector("select").value.trim();
+        if (jenis_pembayaran) itemPesan += `   *Jenis Pembayaran:* ${jenis_pembayaran}\n`;
+
+        if (itemPesan !== `${i + 1}.`) {
+            pesan += itemPesan + "\n";
+        }
     }
 
-    pesan += `*Total Uang Keseluruhan:* Rp${totalUangKeseluruhan}\n*Total TF:* Rp${totalTF}\n*Total Cash:* Rp${totalCash}`;
+    if (totalUangKeseluruhan) pesan += `*Total Uang Keseluruhan:* Rp${totalUangKeseluruhan}\n`;
+    if (totalTF) pesan += `*Total TF:* Rp${totalTF}\n`;
+    if (totalCash) pesan += `*Total Cash:* Rp${totalCash}\n`;
+
+    if (pesan.trim() === `*Laporan Pemasangan*\n*${formattedTanggal}*\n\n`) {
+        alert("Tidak ada data untuk dikirim!");
+        return;
+    }
 
     let encodedPesan = encodeURIComponent(pesan);
     window.open(`https://wa.me/?text=${encodedPesan}`, "_blank");

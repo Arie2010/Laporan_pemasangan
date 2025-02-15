@@ -75,6 +75,7 @@
         <button type="button" onclick="kirimWhatsApp()">Kirim ke WhatsApp</button>
         <p>Created ©ArieID2025 | All rights reserved | Developed by ArieID</p>
     </div>
+
     <script>
         function tambahPemasangan() {
             let container = document.getElementById("pemasangan-container");
@@ -96,8 +97,10 @@
                 <input type="text" class="nama" required><br>
                 <label>ID Member:</label>
                 <input type="text" class="id_member" required><br>
-                <label>IP Address:</label>
+                <label>IP Address ONU:</label>
                 <input type="text" class="ip_address" required><br>
+                <label>IP Router:</label>
+                <input type="text" class="ip_router" required><br>
                 <label>Radio/Signal:</label>
                 <input type="text" class="radio_signal" required><br>
                 <label>Alamat:</label>
@@ -115,49 +118,48 @@
             `;
             container.appendChild(div);
         }
+
         function hapusPemasangan(button) {
             button.parentElement.remove();
         }
+
         function kirimWhatsApp() {
-    let nomorWA = "6285892782997";
-    let tanggal = document.getElementById("tanggal").value;
-    let formattedTanggal = new Date(tanggal).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-    let totalUangKeseluruhan = document.getElementById("total_uang_keseluruhan").value;
-    let totalTF = document.getElementById("total_tf").value;
-    let totalCash = document.getElementById("total_cash").value;
-    let pemasanganContainer = document.getElementById("pemasangan-container");
-    let pemasanganItems = pemasanganContainer.getElementsByClassName("pemasangan-item");
+            let nomorWA = "6285892782997";
+            let tanggal = document.getElementById("tanggal").value;
+            let formattedTanggal = new Date(tanggal).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+            let totalUangKeseluruhan = document.getElementById("total_uang_keseluruhan").value;
+            let totalTF = document.getElementById("total_tf").value;
+            let totalCash = document.getElementById("total_cash").value;
+            let pemasanganContainer = document.getElementById("pemasangan-container");
+            let pemasanganItems = pemasanganContainer.getElementsByClassName("pemasangan-item");
 
-    let dataPaket = {};
+            let dataPaket = {};
 
-    for (let i = 0; i < pemasanganItems.length; i++) {
-        let nama_team = pemasanganItems[i].getElementsByClassName("nama_team")[0].value;
-        let jenis_paket = pemasanganItems[i].getElementsByClassName("jenis_paket")[0].value;
-        let nama = pemasanganItems[i].getElementsByClassName("nama")[0].value;
-        let id_member = pemasanganItems[i].getElementsByClassName("id_member")[0].value;
-        let ip_onu = pemasanganItems[i].getElementsByClassName("ip_address")[0]?.value || "-";
-        let radio_signal = pemasanganItems[i].getElementsByClassName("radio_signal")[0].value;
-        let alamat = pemasanganItems[i].getElementsByClassName("alamat")[0].value;
-        let no_hp = pemasanganItems[i].getElementsByClassName("no_hp")[0].value;
-        let bayaran = pemasanganItems[i].getElementsByClassName("bayaran")[0].value;
+            for (let i = 0; i < pemasanganItems.length; i++) {
+                let nama_team = pemasanganItems[i].getElementsByClassName("nama_team")[0].value;
+                let jenis_paket = pemasanganItems[i].getElementsByClassName("jenis_paket")[0].value;
+                let nama = pemasanganItems[i].getElementsByClassName("nama")[0].value;
+                let id_member = pemasanganItems[i].getElementsByClassName("id_member")[0].value;
+                let ip_onu = pemasanganItems[i].getElementsByClassName("ip_address")[0].value;
+                let ip_router = pemasanganItems[i].getElementsByClassName("ip_router")[0].value;
+                let radio_signal = pemasanganItems[i].getElementsByClassName("radio_signal")[0].value;
+                let alamat = pemasanganItems[i].getElementsByClassName("alamat")[0].value;
+                let no_hp = pemasanganItems[i].getElementsByClassName("no_hp")[0].value;
+                let bayaran = pemasanganItems[i].getElementsByClassName("bayaran")[0].value;
 
-        if (!dataPaket[jenis_paket]) {
-            dataPaket[jenis_paket] = `\n*Paket ${jenis_paket}*\n*Team : ${nama_team}*\n\n`;
+                if (!dataPaket[jenis_paket]) {
+                    dataPaket[jenis_paket] = `\n*Paket ${jenis_paket}*\n*Team : ${nama_team}*\n\n`;
+                }
+
+                dataPaket[jenis_paket] += `${i + 1}. *Nama:* ${nama}\n   *ID Member:* ${id_member}\n   *IP ONU:* ${ip_onu}\n   *IP Router:* ${ip_router}\n   *Radio/Signal:* ${radio_signal}\n   *Alamat:* ${alamat}\n   *No HP:* ${no_hp}\n\n   *Bayaran:* Rp${bayaran}\n\n`;
+            }
+
+            let pesan = `*Laporan Pemasangan*\n*${formattedTanggal}*\n` + Object.values(dataPaket).join("");
+            pesan += `*Total Uang Keseluruhan:* Rp${totalUangKeseluruhan}\n*Total TF:* Rp${totalTF}\n*Total Cash:* Rp${totalCash}`;
+
+            let encodedPesan = encodeURIComponent(pesan);
+            window.open(`https://api.whatsapp.com/send?phone=${nomorWA}&text=${encodedPesan}`, "_blank");
         }
-
-        dataPaket[jenis_paket] += `${i + 1}. *Nama:* ${nama}\n   *ID Member:* ${id_member}\n   *IP ONU:* ${ip_onu}\n   *Radio/Signal:* ${radio_signal}\n   *Alamat:* ${alamat}\n   *No HP:* ${no_hp}\n\n   *Bayaran:* Rp${bayaran}\n\n`;
-    }
-
-    let pesan = `*Laporan Pemasangan*\n*${formattedTanggal}*\n`;
-    for (let paket in dataPaket) {
-        pesan += dataPaket[paket];
-    }
-    pesan += `*Total Uang Keseluruhan:* Rp${totalUangKeseluruhan}\n*Total TF:* Rp${totalTF}\n*Total Cash:* Rp${totalCash}`;
-
-    let encodedPesan = encodeURIComponent(pesan);
-    window.open(`https://api.whatsapp.com/send?phone=${nomorWA}&text=${encodedPesan}`, "_blank");
-}
-
     </script>
 </body>
 </html>

@@ -134,14 +134,16 @@
     let pesan = `*Laporan Pemasangan*\n*${formattedTanggal}*\n\n`;
 
     for (let i = 0; i < pemasanganItems.length; i++) {
-        let nama = pemasanganItems[i].querySelector(".nama").value || "";
-        let id_member = pemasanganItems[i].querySelector(".id_member").value || "";
-        let bayaran = pemasanganItems[i].querySelector(".bayaran").value || "";
-        let jenis_pembayaran = pemasanganItems[i].querySelector("#jenis_pembayaran").value || "";
+        let nama = pemasanganItems[i].querySelector(".nama").value || "-";
+        let id_member = pemasanganItems[i].querySelector(".id_member").value || "-";
+        let ip_onu = pemasanganItems[i].querySelector(".ip_onu").value || "-";
+        let radio_signal = pemasanganItems[i].querySelector(".radio_signal").value || "-";
+        let alamat = pemasanganItems[i].querySelector(".alamat").value || "-";
+        let no_hp = pemasanganItems[i].querySelector(".no_hp").value || "-";
+        let bayaran = pemasanganItems[i].querySelector(".bayaran").value || "-";
+        let jenis_pembayaran = pemasanganItems[i].querySelector("#jenis_pembayaran").value || "-";
 
-        let itemPesan = `${i + 1}. *Nama:* ${nama}\n   *ID Member:* ${id_member}\n`;
-        if (bayaran) itemPesan += `   *Bayaran:* Rp${bayaran}\n`;
-        if (jenis_pembayaran) itemPesan += `   *Jenis Pembayaran:* ${jenis_pembayaran}\n\n`;
+        let itemPesan = `${i + 1}. *Nama:* ${nama}\n   *ID Member:* ${id_member}\n   *IP ONU:* ${ip_onu}\n   *Radio/Signal:* ${radio_signal}\n   *Alamat:* ${alamat}\n   *No HP:* ${no_hp}\n   *Bayaran:* Rp${bayaran}\n   *Jenis Pembayaran:* ${jenis_pembayaran}\n\n`;
 
         pesan += itemPesan;
     }
@@ -151,6 +153,7 @@
     let encodedPesan = encodeURIComponent(pesan);
     window.open(`https://wa.me/?text=${encodedPesan}`, "_blank");
 }
+
 
 
     </script>

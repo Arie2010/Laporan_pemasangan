@@ -112,9 +112,6 @@
                     <option value="Cash+TF">Cash+TF</option>
                 </select><br>
 
-                <label class="label-bayaran">Nominal Bayaran:</label>
-                <input type="number" class="bayaran hidden" oninput="updatePembayaran()"><br>
-
                 <div class="flex-container hidden">
                     <div>
                         <label>Nominal Cash:</label>
@@ -138,23 +135,17 @@
 
             for (let item of pemasanganItems) {
                 let jenisPembayaran = item.querySelector(".jenis_pembayaran").value;
-                let bayaranInput = item.querySelector(".bayaran");
                 let flexContainer = item.querySelector(".flex-container");
                 let bayaranCashInput = item.querySelector(".bayaran-cash");
                 let bayaranTfInput = item.querySelector(".bayaran-tf");
 
                 if (jenisPembayaran === "Cash") {
-                    bayaranInput.classList.remove("hidden");
                     flexContainer.classList.add("hidden");
                     countCash++;
-                    totalCash += parseInt(bayaranInput.value) || 0;
                 } else if (jenisPembayaran === "TF") {
-                    bayaranInput.classList.remove("hidden");
                     flexContainer.classList.add("hidden");
                     countTF++;
-                    totalTF += parseInt(bayaranInput.value) || 0;
                 } else if (jenisPembayaran === "Cash+TF") {
-                    bayaranInput.classList.add("hidden");
                     flexContainer.classList.remove("hidden");
                     countCashTF++;
                     totalCash += parseInt(bayaranCashInput.value) || 0;

@@ -32,7 +32,7 @@
             background-color: #4CAF50;
             color: white;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 18px;
         }
         button:hover {
             background-color: #45a049;
@@ -56,11 +56,18 @@
             font-size: 14px;
             cursor: pointer;
         }
-        .whatsapp-btn {
-            font-size: 18px;
+        .whatsapp-button {
+            font-size: 20px;
             padding: 15px;
             background-color: #25D366;
+            color: white;
+            border: none;
+            cursor: pointer;
             width: 100%;
+            border-radius: 5px;
+        }
+        .whatsapp-button:hover {
+            background-color: #1EBE5D;
         }
     </style>
 </head>
@@ -88,9 +95,10 @@
         <label for="total_cash">Total Cash:</label>
         <input type="text" id="total_cash" readonly><br>
 
-        <button type="button" class="whatsapp-btn" onclick="kirimWhatsAppGrup()">Kirim ke WhatsApp</button>
+        <button type="button" class="whatsapp-button" onclick="kirimWhatsAppGrup()">📩 Kirim ke WhatsApp</button>
+        <p>Noted | Jika bagian input yang tidak diperlukan harap dikosongkan saja | Created ©ArieID2025</p>
     </div>
-
+    
 <script>
     function tambahPemasangan() {
         let container = document.getElementById("pemasangan-container");
@@ -120,74 +128,54 @@
             <label>No HP:</label>
             <input type="text" class="no_hp"><br>
             <label>Jenis Pembayaran:</label>
-            <select class="jenis_pembayaran" onchange="toggleCashTF(this)">
+            <select class="jenis_pembayaran" onchange="toggleBayaran(this)">
                 <option value="Cash">Cash</option>
                 <option value="TF">TF</option>
                 <option value="Cash+TF">Cash+TF</option>
             </select><br>
-            <label>Jumlah Bayaran:</label>
-            <input type="number" class="bayaran" oninput="updatePembayaran()"><br>
-            <div class="cash-tf-fields" style="display: none;">
-                <label>Jumlah Cash:</label>
-                <input type="number" class="jumlah_cash" oninput="updatePembayaran()"><br>
-                <label>Jumlah TF:</label>
-                <input type="number" class="jumlah_tf" oninput="updatePembayaran()"><br>
-            </div>
+            <div class="bayaran-container"></div>
         `;
 
         container.appendChild(div);
-        updatePembayaran();
     }
 
     function hapusPemasangan(button) {
         button.parentElement.remove();
-        updatePembayaran();
     }
 
-    function toggleCashTF(selectElement) {
-        let container = selectElement.closest(".pemasangan-item");
-        let cashTfFields = container.querySelector(".cash-tf-fields");
+    function toggleBayaran(select) {
+        let container = select.parentElement.querySelector(".bayaran-container");
+        container.innerHTML = "";
 
-        if (selectElement.value === "Cash+TF") {
-            cashTfFields.style.display = "block";
-        } else {
-            cashTfFields.style.display = "none";
+        if (select.value === "Cash") {
+            container.innerHTML = `<label>Bayaran Cash:</label><input type="number" class="bayaran_cash">`;
+        } else if (select.value === "TF") {
+            container.innerHTML = `<label>Bayaran TF:</label><input type="number" class="bayaran_tf">`;
+        } else if (select.value === "Cash+TF") {
+            container.innerHTML = `
+                <label>Bayaran Cash:</label><input type="number" class="bayaran_cash">
+                <label>Bayaran TF:</label><input type="number" class="bayaran_tf">
+            `;
         }
-        updatePembayaran();
     }
 
-    function updatePembayaran() {
+    function kirimWhatsAppGrup() {
+        let tanggal = document.getElementById("tanggal").value;
+        let laporan = `Laporan Pemasangan - ${tanggal}\n\n`;
+
         let pemasanganItems = document.getElementsByClassName("pemasangan-item");
-        let countCash = 0, countTF = 0, countCashTF = 0;
-        let totalCash = 0, totalTF = 0, totalKeseluruhan = 0;
-
         for (let item of pemasanganItems) {
-            let jenisPembayaran = item.querySelector(".jenis_pembayaran").value;
-            let bayaran = parseInt(item.querySelector(".bayaran").value) || 0;
-            let jumlahCash = parseInt(item.querySelector(".jumlah_cash")?.value) || 0;
-            let jumlahTF = parseInt(item.querySelector(".jumlah_tf")?.value) || 0;
+            let nama = item.querySelector(".nama").value;
+            let ipOnu = item.querySelector(".ip_onu").value;
+            let ipRouter = item.querySelector(".ip_router").value;
 
-            if (jenisPembayaran === "Cash") {
-                countCash++;
-                totalCash += bayaran;
-            } else if (jenisPembayaran === "TF") {
-                countTF++;
-                totalTF += bayaran;
-            } else if (jenisPembayaran === "Cash+TF") {
-                countCashTF++;
-                totalCash += jumlahCash;
-                totalTF += jumlahTF;
-            }
-
-            totalKeseluruhan += bayaran;
+            laporan += `Nama: ${nama}\n`;
+            if (ipOnu) laporan += `IP ONU: ${ipOnu}\n`;
+            if (ipRouter) laporan += `IP Router: ${ipRouter}\n\n`;
         }
 
-        document.getElementById("count_cash").textContent = countCash;
-        document.getElementById("count_tf").textContent = countTF;
-        document.getElementById("count_cash_tf").textContent = countCashTF;
-        document.getElementById("total_cash").value = totalCash;
-        document.getElementById("total_tf").value = totalTF;
-        document.getElementById("total_uang_keseluruhan").value = totalKeseluruhan;
+        let groupLink = "https://wa.me/?text=" + encodeURIComponent(laporan);
+        window.open(groupLink, "_blank");
     }
 </script>
 </body>

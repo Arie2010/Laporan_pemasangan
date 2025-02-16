@@ -179,6 +179,12 @@
             document.getElementById("total_tf").value = totalTF;
             document.getElementById("total_uang_keseluruhan").value = totalKeseluruhan;
         }
+
+        function kirimWhatsAppGrup() {
+            let pesan = "Laporan Pemasangan telah dikirim.";
+            let groupLink = "https://wa.me/?text=" + encodeURIComponent(pesan);
+            window.open(groupLink, "_blank");
+        }
     </script>
 </body>
 </html>

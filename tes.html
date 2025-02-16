@@ -132,56 +132,73 @@
             button.parentElement.remove();
         }
 
-        function kirimWhatsAppGrup() {
-            let tanggal = document.getElementById("tanggal").value;
-            let formattedTanggal = new Date(tanggal).toLocaleDateString('id-ID', { 
-                weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' 
-            });
+       
+    function kirimWhatsAppGrup() {
+        let tanggal = document.getElementById("tanggal").value;
+        let formattedTanggal = new Date(tanggal).toLocaleDateString('id-ID', { 
+            weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' 
+        });
 
-            let pemasanganContainer = document.getElementById("pemasangan-container");
-            let pemasanganItems = pemasanganContainer.getElementsByClassName("pemasangan-item");
+        let pemasanganContainer = document.getElementById("pemasangan-container");
+        let pemasanganItems = pemasanganContainer.getElementsByClassName("pemasangan-item");
 
-            let paketData = {};
+        let totalPemasangan = pemasanganItems.length;
+        let paketData = {};
 
-            for (let item of pemasanganItems) {
-                let paket = item.querySelector(".jenis_paket").value;
-                let namaTeam = item.querySelector(".nama_team").value.trim();
-                let ipRouter = item.querySelector(".ip_router").value.trim();
-                let data = `
-                Nama: ${item.querySelector(".nama").value.trim()}
-                ID Member: ${item.querySelector(".id_member").value.trim()}
-                IP ONU: ${item.querySelector(".ip_onu").value.trim()}
-                ${ipRouter ? `IP Router: ${ipRouter}` : ""}
-                Radio/Signal: ${item.querySelector(".radio_signal").value.trim()}
-                Alamat: ${item.querySelector(".alamat").value.trim()}
-                No HP: ${item.querySelector(".no_hp").value.trim()}
-                Bayaran: Rp${item.querySelector(".bayaran").value.trim()}
-                Jenis Pembayaran: ${item.querySelector(".jenis_pembayaran").value.trim()}
-                `;
+        for (let item of pemasanganItems) {
+            let paket = item.querySelector(".jenis_paket").value;
+            let namaTeam = item.querySelector(".nama_team").value.trim();
+            let ipRouter = item.querySelector(".ip_router").value.trim();
 
-                if (!paketData[paket]) {
-                    paketData[paket] = {};
-                }
-                if (!paketData[paket][namaTeam]) {
-                    paketData[paket][namaTeam] = [];
-                }
-                paketData[paket][namaTeam].push(data.trim());
-            }
+            let data = `Nama : ${item.querySelector(".nama").value.trim()}
+id member : ${item.querySelector(".id_member").value.trim()}
+Ip Onu : ${item.querySelector(".ip_onu").value.trim()}
+${ipRouter ? `Ip Router : ${ipRouter}\n` : ""}Radio/Signal : ${item.querySelector(".radio_signal").value.trim()}
+Alamat : ${item.querySelector(".alamat").value.trim()}
+No hp : ${item.querySelector(".no_hp").value.trim()}
+Bayaran : ${item.querySelector(".bayaran").value.trim()}
+Jenis pembayaran : ${item.querySelector(".jenis_pembayaran").value.trim()}`;
 
-            let pesan = `*Laporan Pemasangan*\n*${formattedTanggal}*\n\n`;
-            for (let paket in paketData) {
-                pesan += `*Paket ${paket}*\n`;
-                for (let team in paketData[paket]) {
-                    pesan += `*Team: ${team}*\n`;
-                    paketData[paket][team].forEach((data, index) => {
-                        pesan += `${index + 1}. ${data}\n`;
-                    });
-                }
-            }
-
-            let encodedPesan = encodeURIComponent(pesan);
-            window.open(`https://wa.me/?text=${encodedPesan}`, "_blank");
+            if (!paketData[paket]) paketData[paket] = {};
+            if (!paketData[paket][namaTeam]) paketData[paket][namaTeam] = [];
+            paketData[paket][namaTeam].push(data);
         }
+
+        let totalUangKeseluruhan = document.getElementById("total_uang_keseluruhan").value.trim();
+        let totalTF = document.getElementById("total_tf").value.trim();
+        let totalCash = document.getElementById("total_cash").value.trim();
+        let countCash = document.getElementById("count_cash").textContent.trim();
+        let countTF = document.getElementById("count_tf").textContent.trim();
+        let countCashTF = document.getElementById("count_cash_tf").textContent.trim();
+
+        let pesan = `*Laporan Pemasangan*\n*${formattedTanggal}*\n\n`;
+
+        for (let paket in paketData) {
+            pesan += `*Paket ${paket}*\n`;
+            for (let team in paketData[paket]) {
+                pesan += `*Team : ${team || "-"}*\n\n`;
+                paketData[paket][team].forEach((data, index) => {
+                    pesan += `${index + 1}. ${data}\n\n`;
+                });
+            }
+        }
+
+        pesan += `*Total Pemasangan : ${totalPemasangan}*\n\n`;
+
+        pesan += `*Rincian Pembayaran*\n`;
+        pesan += `Cash : ${countCash}\n`;
+        pesan += `TF : ${countTF}\n`;
+        pesan += `Cash+TF : ${countCashTF}\n\n`;
+
+        pesan += `*Total Uang Keseluruhan :* ${totalUangKeseluruhan}\n`;
+        pesan += `*Total TF :* ${totalTF}\n`;
+        pesan += `*Total Uang Cash Keseluruhan :* ${totalCash}`;
+
+        let encodedPesan = encodeURIComponent(pesan);
+        window.open(`https://wa.me/?text=${encodedPesan}`, "_blank");
+    }
+
+
     </script>
 </body>
 </html>

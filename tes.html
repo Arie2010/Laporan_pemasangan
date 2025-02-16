@@ -39,6 +39,13 @@
         .hidden {
             display: none;
         }
+        .flex-container {
+            display: flex;
+            gap: 10px;
+        }
+        .flex-container div {
+            flex: 1;
+        }
     </style>
 </head>
 <body>
@@ -105,11 +112,18 @@
                     <option value="Cash+TF">Cash+TF</option>
                 </select><br>
 
-                <div class="bayaran-container hidden">
-                    <label class="label-cash hidden">Nominal Cash:</label>
-                    <input type="number" class="bayaran_cash hidden" oninput="updatePembayaran()"><br>
-                    <label class="label-tf hidden">Nominal TF:</label>
-                    <input type="number" class="bayaran_tf hidden" oninput="updatePembayaran()"><br>
+                <label class="label-bayaran">Nominal Bayaran:</label>
+                <input type="number" class="bayaran hidden" oninput="updatePembayaran()"><br>
+
+                <div class="flex-container hidden">
+                    <div>
+                        <label>Nominal Cash:</label>
+                        <input type="number" class="bayaran-cash" oninput="updatePembayaran()">
+                    </div>
+                    <div>
+                        <label>Nominal TF:</label>
+                        <input type="number" class="bayaran-tf" oninput="updatePembayaran()">
+                    </div>
                 </div>
             `;
 
@@ -124,50 +138,36 @@
 
             for (let item of pemasanganItems) {
                 let jenisPembayaran = item.querySelector(".jenis_pembayaran").value;
-                let bayaranCash = item.querySelector(".bayaran_cash");
-                let bayaranTF = item.querySelector(".bayaran_tf");
-                let labelCash = item.querySelector(".label-cash");
-                let labelTF = item.querySelector(".label-tf");
+                let bayaranInput = item.querySelector(".bayaran");
+                let flexContainer = item.querySelector(".flex-container");
+                let bayaranCashInput = item.querySelector(".bayaran-cash");
+                let bayaranTfInput = item.querySelector(".bayaran-tf");
 
                 if (jenisPembayaran === "Cash") {
+                    bayaranInput.classList.remove("hidden");
+                    flexContainer.classList.add("hidden");
                     countCash++;
-                    bayaranCash.classList.remove("hidden");
-                    labelCash.classList.remove("hidden");
-                    bayaranTF.classList.add("hidden");
-                    labelTF.classList.add("hidden");
-                    totalCash += parseInt(bayaranCash.value) || 0;
+                    totalCash += parseInt(bayaranInput.value) || 0;
                 } else if (jenisPembayaran === "TF") {
+                    bayaranInput.classList.remove("hidden");
+                    flexContainer.classList.add("hidden");
                     countTF++;
-                    bayaranTF.classList.remove("hidden");
-                    labelTF.classList.remove("hidden");
-                    bayaranCash.classList.add("hidden");
-                    labelCash.classList.add("hidden");
-                    totalTF += parseInt(bayaranTF.value) || 0;
+                    totalTF += parseInt(bayaranInput.value) || 0;
                 } else if (jenisPembayaran === "Cash+TF") {
+                    bayaranInput.classList.add("hidden");
+                    flexContainer.classList.remove("hidden");
                     countCashTF++;
-                    bayaranCash.classList.remove("hidden");
-                    labelCash.classList.remove("hidden");
-                    bayaranTF.classList.remove("hidden");
-                    labelTF.classList.remove("hidden");
-                    totalCash += parseInt(bayaranCash.value) || 0;
-                    totalTF += parseInt(bayaranTF.value) || 0;
-                } else {
-                    bayaranCash.classList.add("hidden");
-                    labelCash.classList.add("hidden");
-                    bayaranTF.classList.add("hidden");
-                    labelTF.classList.add("hidden");
+                    totalCash += parseInt(bayaranCashInput.value) || 0;
+                    totalTF += parseInt(bayaranTfInput.value) || 0;
                 }
-
-                totalKeseluruhan = totalCash + totalTF;
             }
 
-            document.getElementById("total_pemasangan").textContent = pemasanganItems.length;
             document.getElementById("count_cash").textContent = countCash;
             document.getElementById("count_tf").textContent = countTF;
             document.getElementById("count_cash_tf").textContent = countCashTF;
             document.getElementById("total_cash").value = totalCash;
             document.getElementById("total_tf").value = totalTF;
-            document.getElementById("total_uang_keseluruhan").value = totalKeseluruhan;
+            document.getElementById("total_uang_keseluruhan").value = totalCash + totalTF;
         }
     </script>
 </body>

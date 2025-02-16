@@ -115,9 +115,10 @@
                 `   *ID Member*: ${idMember}\n`;//+
                 
                 // Hanya menampilkan salah satu dari IP ONU atau IP Router, tergantung mana yang diisi
-                if (ipOnu && !ipRouter) {
+                if (ipOnu) {
     pemasanganDetail += `   *IP ONU*: ${ipOnu}\n`;
-} else if (ipRouter && !ipOnu) {
+}
+if (ipRouter) {
     pemasanganDetail += `   *IP Router*: ${ipRouter}\n`;
 }
 
@@ -128,7 +129,7 @@
                 `   *No HP*: ${noHp}\n` +
                 `   *Bayaran*: ${bayaran}\n` +
                 `   *Jenis Pembayaran*: ${jenisPembayaran}\n`;
-            }
+            //}
 
             //   `   *IP ONU*: ${ipOnu}\n` +
              //   `   *IP Router*: ${ipRouter}\n` +

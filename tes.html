@@ -101,8 +101,22 @@
                     <option value="Ftth Non Subsidi">Ftth Non Subsidi</option>
                     <option value="Paket UpTo Kolektif">Paket UpTo Kolektif</option>
                 </select><br>
+                <label>Nama:</label>
+                <input type="text" class="nama"><br>
+                <label>ID Member:</label>
+                <input type="text" class="id_member"><br>
+                <label>IP ONU:</label>
+                <input type="text" class="ip_onu"><br>
+                <label>Radio/Signal:</label>
+                <input type="text" class="radio_signal"><br>
+                <label>Alamat:</label>
+                <textarea class="alamat"></textarea><br>
+                <label>No HP:</label>
+                <input type="text" class="no_hp"><br>
+                <label>Bayaran:</label>
+                <input type="text" class="bayaran"><br>
                 <label>Jenis Pembayaran:</label>
-                <select class="jenis_pembayaran" onchange="updateRincian()">
+                <select class="jenis_pembayaran">
                     <option value="Cash">Cash</option>
                     <option value="TF">TF</option>
                     <option value="Cash+TF">Cash+TF</option>
@@ -110,30 +124,10 @@
             `;
 
             container.appendChild(div);
-            updateRincian();
         }
 
         function hapusPemasangan(button) {
             button.parentElement.remove();
-            updateRincian();
-        }
-
-        function updateRincian() {
-            let pemasanganItems = document.getElementsByClassName("pemasangan-item");
-            document.getElementById("total_pemasangan").textContent = pemasanganItems.length;
-
-            let countCash = 0, countTF = 0, countCashTF = 0;
-
-            for (let item of pemasanganItems) {
-                let pembayaran = item.querySelector(".jenis_pembayaran").value;
-                if (pembayaran === "Cash") countCash++;
-                if (pembayaran === "TF") countTF++;
-                if (pembayaran === "Cash+TF") countCashTF++;
-            }
-
-            document.getElementById("count_cash").textContent = countCash;
-            document.getElementById("count_tf").textContent = countTF;
-            document.getElementById("count_cash_tf").textContent = countCashTF;
         }
 
         function kirimWhatsAppGrup() {
@@ -142,20 +136,44 @@
                 weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' 
             });
 
-            let totalPemasangan = document.getElementById("total_pemasangan").textContent;
-            let totalUangKeseluruhan = document.getElementById("total_uang_keseluruhan").value.trim();
-            let totalTF = document.getElementById("total_tf").value.trim();
-            let totalCash = document.getElementById("total_cash").value.trim();
+            let pemasanganContainer = document.getElementById("pemasangan-container");
+            let pemasanganItems = pemasanganContainer.getElementsByClassName("pemasangan-item");
+
+            let paketData = {};
+
+            for (let item of pemasanganItems) {
+                let paket = item.querySelector(".jenis_paket").value;
+                let namaTeam = item.querySelector(".nama_team").value.trim();
+                let data = `
+                Nama: ${item.querySelector(".nama").value.trim()}
+                ID Member: ${item.querySelector(".id_member").value.trim()}
+                IP ONU: ${item.querySelector(".ip_onu").value.trim()}
+                Radio/Signal: ${item.querySelector(".radio_signal").value.trim()}
+                Alamat: ${item.querySelector(".alamat").value.trim()}
+                No HP: ${item.querySelector(".no_hp").value.trim()}
+                Bayaran: Rp${item.querySelector(".bayaran").value.trim()}
+                Jenis Pembayaran: ${item.querySelector(".jenis_pembayaran").value.trim()}
+                `;
+
+                if (!paketData[paket]) {
+                    paketData[paket] = {};
+                }
+                if (!paketData[paket][namaTeam]) {
+                    paketData[paket][namaTeam] = [];
+                }
+                paketData[paket][namaTeam].push(data);
+            }
 
             let pesan = `*Laporan Pemasangan*\n*${formattedTanggal}*\n\n`;
-            pesan += `Total Pemasangan: ${totalPemasangan}\n`;
-            pesan += `Cash: ${document.getElementById("count_cash").textContent}\n`;
-            pesan += `TF: ${document.getElementById("count_tf").textContent}\n`;
-            pesan += `Cash+TF: ${document.getElementById("count_cash_tf").textContent}\n`;
-
-            pesan += `\nTotal Uang Keseluruhan: Rp${totalUangKeseluruhan}\n`;
-            pesan += `Total TF: Rp${totalTF}\n`;
-            pesan += `Total Cash: Rp${totalCash}\n`;
+            for (let paket in paketData) {
+                pesan += `*Paket ${paket}*\n`;
+                for (let team in paketData[paket]) {
+                    pesan += `*Team: ${team}*\n`;
+                    paketData[paket][team].forEach((data, index) => {
+                        pesan += `${index + 1}. ${data}\n`;
+                    });
+                }
+            }
 
             let encodedPesan = encodeURIComponent(pesan);
             window.open(`https://wa.me/?text=${encodedPesan}`, "_blank");

@@ -74,13 +74,6 @@
         <p>TF: <span id="count_tf">0</span></p>
         <p>Cash+TF: <span id="count_cash_tf">0</span></p>
 
-        <label for="total_uang_keseluruhan">Total Uang Keseluruhan:</label>
-        <input type="text" id="total_uang_keseluruhan" readonly><br>
-        <label for="total_tf">Total TF:</label>
-        <input type="text" id="total_tf" readonly><br>
-        <label for="total_cash">Total Cash:</label>
-        <input type="text" id="total_cash" readonly><br>
-
         <button type="button" onclick="kirimWhatsAppGrup()">Kirim ke WhatsApp</button>
         <p>Noted | Jika bagian input yang tidak diperlukan harap dikosongkan saja | Created ©ArieID2025</p>
     </div>
@@ -109,72 +102,70 @@
             <textarea class="alamat"></textarea><br>
             <label>No HP:</label>
             <input type="text" class="no_hp"><br>
+            <label>IP ONU:</label>
+            <input type="text" class="ip_onu"><br>
+            <label>IP Router:</label>
+            <input type="text" class="ip_router"><br>
             <label>Jenis Pembayaran:</label>
-            <select class="jenis_pembayaran" onchange="toggleBayaran(this)">
+            <select class="jenis_pembayaran">
                 <option value="Cash">Cash</option>
                 <option value="TF">TF</option>
                 <option value="Cash+TF">Cash+TF</option>
             </select><br>
-            <div class="bayaran-container"></div>
         `;
 
         container.appendChild(div);
-        updatePembayaran();
+        updateTotalPemasangan();
     }
 
     function hapusPemasangan(button) {
         button.parentElement.remove();
-        updatePembayaran();
+        updateTotalPemasangan();
     }
 
-    function toggleBayaran(select) {
-        let container = select.parentElement.querySelector(".bayaran-container");
-        container.innerHTML = "";
-
-        if (select.value === "Cash") {
-            container.innerHTML = `<label>Bayaran Cash:</label><input type="number" class="bayaran_cash" oninput="updatePembayaran()">`;
-        } else if (select.value === "TF") {
-            container.innerHTML = `<label>Bayaran TF:</label><input type="number" class="bayaran_tf" oninput="updatePembayaran()">`;
-        } else if (select.value === "Cash+TF") {
-            container.innerHTML = `
-                <label>Bayaran Cash:</label><input type="number" class="bayaran_cash" oninput="updatePembayaran()">
-                <label>Bayaran TF:</label><input type="number" class="bayaran_tf" oninput="updatePembayaran()">
-            `;
-        }
-    }
-
-    function updatePembayaran() {
+    function updateTotalPemasangan() {
         let pemasanganItems = document.getElementsByClassName("pemasangan-item");
-        let countCash = 0, countTF = 0, countCashTF = 0;
-        let totalCash = 0, totalTF = 0, totalKeseluruhan = 0;
-
-        for (let item of pemasanganItems) {
-            let jenisPembayaran = item.querySelector(".jenis_pembayaran").value;
-            let cash = parseInt(item.querySelector(".bayaran_cash")?.value) || 0;
-            let tf = parseInt(item.querySelector(".bayaran_tf")?.value) || 0;
-
-            totalKeseluruhan += cash + tf;
-            totalCash += cash;
-            totalTF += tf;
-
-            if (jenisPembayaran === "Cash") countCash++;
-            else if (jenisPembayaran === "TF") countTF++;
-            else if (jenisPembayaran === "Cash+TF") countCashTF++;
-        }
-
         document.getElementById("total_pemasangan").textContent = pemasanganItems.length;
-        document.getElementById("count_cash").textContent = countCash;
-        document.getElementById("count_tf").textContent = countTF;
-        document.getElementById("count_cash_tf").textContent = countCashTF;
-        document.getElementById("total_cash").value = totalCash;
-        document.getElementById("total_tf").value = totalTF;
-        document.getElementById("total_uang_keseluruhan").value = totalKeseluruhan;
     }
 
     function kirimWhatsAppGrup() {
         let tanggal = document.getElementById("tanggal").value;
         let totalPemasangan = document.getElementById("total_pemasangan").textContent;
-        let laporan = `*Laporan Pemasangan*\n*Minggu, ${tanggal}*\n\nTotal Pemasangan: ${totalPemasangan}`;
+        let laporan = `*Laporan Pemasangan*\n*Minggu, ${tanggal}*\n\nTotal Pemasangan: ${totalPemasangan}\n\n`;
+
+        let pemasanganItems = document.getElementsByClassName("pemasangan-item");
+
+        for (let i = 0; i < pemasanganItems.length; i++) {
+            let item = pemasanganItems[i];
+            let namaTeam = item.querySelector(".nama_team").value;
+            let jenisPaket = item.querySelector(".jenis_paket").value;
+            let nama = item.querySelector(".nama").value;
+            let idMember = item.querySelector(".id_member").value;
+            let alamat = item.querySelector(".alamat").value;
+            let noHp = item.querySelector(".no_hp").value;
+            let ipOnu = item.querySelector(".ip_onu").value;
+            let ipRouter = item.querySelector(".ip_router").value;
+            let jenisPembayaran = item.querySelector(".jenis_pembayaran").value;
+
+            let pemasanganText = `🔹 *Pemasangan ${i + 1}*\n`;
+            pemasanganText += `👤 *Nama Team:* ${namaTeam}\n`;
+            pemasanganText += `📦 *Jenis Paket:* ${jenisPaket}\n`;
+            pemasanganText += `👤 *Nama:* ${nama}\n`;
+            pemasanganText += `🔢 *ID Member:* ${idMember}\n`;
+            pemasanganText += `📍 *Alamat:* ${alamat}\n`;
+            pemasanganText += `📞 *No HP:* ${noHp}\n`;
+            
+            if (ipOnu) {
+                pemasanganText += `🌐 *IP ONU:* ${ipOnu}\n`;
+            }
+            if (ipRouter) {
+                pemasanganText += `📡 *IP Router:* ${ipRouter}\n`;
+            }
+
+            pemasanganText += `💰 *Jenis Pembayaran:* ${jenisPembayaran}\n\n`;
+
+            laporan += pemasanganText;
+        }
 
         let groupLink = "https://wa.me/?text=" + encodeURIComponent(laporan);
         window.open(groupLink, "_blank");

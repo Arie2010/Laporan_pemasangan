@@ -63,17 +63,26 @@
         <h2>Island.Net</h2>
         <label for="tanggal">Tanggal:</label>
         <input type="date" id="tanggal" required><br>
+
+        <h3>Total Pemasangan: <span id="total_pemasangan">0</span></h3>
         <div id="pemasangan-container"></div>
+
         <button type="button" onclick="tambahPemasangan()">Tambah Pemasangan</button>
+
         <h3>Rincian Pembayaran</h3>
+        <p>Cash: <span id="count_cash">0</span></p>
+        <p>TF: <span id="count_tf">0</span></p>
+        <p>Cash+TF: <span id="count_cash_tf">0</span></p>
+
         <label for="total_uang_keseluruhan">Total Uang Keseluruhan:</label>
         <input type="text" id="total_uang_keseluruhan" required><br>
         <label for="total_tf">Total TF:</label>
         <input type="text" id="total_tf" required><br>
         <label for="total_cash">Total Cash:</label>
         <input type="text" id="total_cash" required><br>
-        <button type="button" onclick="kirimWhatsApp()">Kirim ke WhatsApp</button>
-        <p>Created ©ArieID2025 | All rights reserved | Developed by ArieID</p>
+
+        <button type="button" onclick="kirimWhatsAppGrup()">Kirim ke WhatsApp</button>
+        <p>Noted | Jika bagian input yang tidak diperlukan harap dikosongkan saja | Created ©ArieID2025</p>
     </div>
 
     <script>
@@ -81,84 +90,75 @@
             let container = document.getElementById("pemasangan-container");
             let div = document.createElement("div");
             div.classList.add("pemasangan-item");
-            let index = container.children.length + 1;
+
             div.innerHTML = `
                 <button class="remove-btn" onclick="hapusPemasangan(this)">X</button>
-                <h4>Pemasangan ${index}</h4>
                 <label>Nama Team:</label>
-                <input type="text" class="nama_team" required><br>
+                <input type="text" class="nama_team"><br>
                 <label>Jenis Paket:</label>
                 <select class="jenis_paket">
                     <option value="Ftth Subsidi">Ftth Subsidi</option>
                     <option value="Ftth Non Subsidi">Ftth Non Subsidi</option>
                     <option value="Paket UpTo Kolektif">Paket UpTo Kolektif</option>
                 </select><br>
-                <label>Nama:</label>
-                <input type="text" class="nama" required><br>
-                <label>ID Member:</label>
-                <input type="text" class="id_member" required><br>
-                <label>IP Address ONU:</label>
-                <input type="text" class="ip_address" required><br>
-                <label>IP Router:</label>
-                <input type="text" class="ip_router" required><br>
-                <label>Radio/Signal:</label>
-                <input type="text" class="radio_signal" required><br>
-                <label>Alamat:</label>
-                <textarea class="alamat" required></textarea><br>
-                <label>No HP:</label>
-                <input type="text" class="no_hp" required><br>
-                <label>Bayaran:</label>
-                <input type="text" class="bayaran" required><br>
                 <label>Jenis Pembayaran:</label>
-                <select class="jenis_pembayaran">
+                <select class="jenis_pembayaran" onchange="updateRincian()">
                     <option value="Cash">Cash</option>
                     <option value="TF">TF</option>
                     <option value="Cash+TF">Cash+TF</option>
                 </select><br>
             `;
+
             container.appendChild(div);
+            updateRincian();
         }
 
         function hapusPemasangan(button) {
             button.parentElement.remove();
+            updateRincian();
         }
 
-        function kirimWhatsApp() {
-            let nomorWA = "6285892782997";
-            let tanggal = document.getElementById("tanggal").value;
-            let formattedTanggal = new Date(tanggal).toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
-            let totalUangKeseluruhan = document.getElementById("total_uang_keseluruhan").value;
-            let totalTF = document.getElementById("total_tf").value;
-            let totalCash = document.getElementById("total_cash").value;
-            let pemasanganContainer = document.getElementById("pemasangan-container");
-            let pemasanganItems = pemasanganContainer.getElementsByClassName("pemasangan-item");
+        function updateRincian() {
+            let pemasanganItems = document.getElementsByClassName("pemasangan-item");
+            document.getElementById("total_pemasangan").textContent = pemasanganItems.length;
 
-            let dataPaket = {};
+            let countCash = 0, countTF = 0, countCashTF = 0;
 
-            for (let i = 0; i < pemasanganItems.length; i++) {
-                let nama_team = pemasanganItems[i].getElementsByClassName("nama_team")[0].value;
-                let jenis_paket = pemasanganItems[i].getElementsByClassName("jenis_paket")[0].value;
-                let nama = pemasanganItems[i].getElementsByClassName("nama")[0].value;
-                let id_member = pemasanganItems[i].getElementsByClassName("id_member")[0].value;
-                let ip_onu = pemasanganItems[i].getElementsByClassName("ip_address")[0].value;
-                let ip_router = pemasanganItems[i].getElementsByClassName("ip_router")[0].value;
-                let radio_signal = pemasanganItems[i].getElementsByClassName("radio_signal")[0].value;
-                let alamat = pemasanganItems[i].getElementsByClassName("alamat")[0].value;
-                let no_hp = pemasanganItems[i].getElementsByClassName("no_hp")[0].value;
-                let bayaran = pemasanganItems[i].getElementsByClassName("bayaran")[0].value;
-
-                if (!dataPaket[jenis_paket]) {
-                    dataPaket[jenis_paket] = `\n*Paket ${jenis_paket}*\n*Team : ${nama_team}*\n\n`;
-                }
-
-                dataPaket[jenis_paket] += `${i + 1}. *Nama:* ${nama}\n   *ID Member:* ${id_member}\n   *IP ONU:* ${ip_onu}\n   *IP Router:* ${ip_router}\n   *Radio/Signal:* ${radio_signal}\n   *Alamat:* ${alamat}\n   *No HP:* ${no_hp}\n\n   *Bayaran:* Rp${bayaran}\n\n`;
+            for (let item of pemasanganItems) {
+                let pembayaran = item.querySelector(".jenis_pembayaran").value;
+                if (pembayaran === "Cash") countCash++;
+                if (pembayaran === "TF") countTF++;
+                if (pembayaran === "Cash+TF") countCashTF++;
             }
 
-            let pesan = `*Laporan Pemasangan*\n*${formattedTanggal}*\n` + Object.values(dataPaket).join("");
-            pesan += `*Total Uang Keseluruhan:* Rp${totalUangKeseluruhan}\n*Total TF:* Rp${totalTF}\n*Total Cash:* Rp${totalCash}`;
+            document.getElementById("count_cash").textContent = countCash;
+            document.getElementById("count_tf").textContent = countTF;
+            document.getElementById("count_cash_tf").textContent = countCashTF;
+        }
+
+        function kirimWhatsAppGrup() {
+            let tanggal = document.getElementById("tanggal").value;
+            let formattedTanggal = new Date(tanggal).toLocaleDateString('id-ID', { 
+                weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' 
+            });
+
+            let totalPemasangan = document.getElementById("total_pemasangan").textContent;
+            let totalUangKeseluruhan = document.getElementById("total_uang_keseluruhan").value.trim();
+            let totalTF = document.getElementById("total_tf").value.trim();
+            let totalCash = document.getElementById("total_cash").value.trim();
+
+            let pesan = `*Laporan Pemasangan*\n*${formattedTanggal}*\n\n`;
+            pesan += `Total Pemasangan: ${totalPemasangan}\n`;
+            pesan += `Cash: ${document.getElementById("count_cash").textContent}\n`;
+            pesan += `TF: ${document.getElementById("count_tf").textContent}\n`;
+            pesan += `Cash+TF: ${document.getElementById("count_cash_tf").textContent}\n`;
+
+            pesan += `\nTotal Uang Keseluruhan: Rp${totalUangKeseluruhan}\n`;
+            pesan += `Total TF: Rp${totalTF}\n`;
+            pesan += `Total Cash: Rp${totalCash}\n`;
 
             let encodedPesan = encodeURIComponent(pesan);
-            window.open(`https://api.whatsapp.com/send?phone=${nomorWA}&text=${encodedPesan}`, "_blank");
+            window.open(`https://wa.me/?text=${encodedPesan}`, "_blank");
         }
     </script>
 </body>

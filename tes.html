@@ -75,11 +75,11 @@
         <p>Cash+TF: <span id="count_cash_tf">0</span></p>
 
         <label for="total_uang_keseluruhan">Total Uang Keseluruhan:</label>
-        <input type="text" id="total_uang_keseluruhan" required><br>
+        <input type="text" id="total_uang_keseluruhan" readonly><br>
         <label for="total_tf">Total TF:</label>
-        <input type="text" id="total_tf" required><br>
+        <input type="text" id="total_tf" readonly><br>
         <label for="total_cash">Total Cash:</label>
-        <input type="text" id="total_cash" required><br>
+        <input type="text" id="total_cash" readonly><br>
 
         <button type="button" onclick="kirimWhatsAppGrup()">Kirim ke WhatsApp</button>
         <p>Noted | Jika bagian input yang tidak diperlukan harap dikosongkan saja | Created ©ArieID2025</p>
@@ -116,9 +116,9 @@
                 <label>No HP:</label>
                 <input type="text" class="no_hp"><br>
                 <label>Bayaran:</label>
-                <input type="text" class="bayaran"><br>
+                <input type="number" class="bayaran" oninput="updatePembayaran()"><br>
                 <label>Jenis Pembayaran:</label>
-                <select class="jenis_pembayaran">
+                <select class="jenis_pembayaran" onchange="updatePembayaran()">
                     <option value="Cash">Cash</option>
                     <option value="TF">TF</option>
                     <option value="Cash+TF">Cash+TF</option>
@@ -126,79 +126,44 @@
             `;
 
             container.appendChild(div);
+            updatePembayaran();
         }
 
         function hapusPemasangan(button) {
             button.parentElement.remove();
+            updatePembayaran();
         }
 
-       
-    function kirimWhatsAppGrup() {
-        let tanggal = document.getElementById("tanggal").value;
-        let formattedTanggal = new Date(tanggal).toLocaleDateString('id-ID', { 
-            weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' 
-        });
+        function updatePembayaran() {
+            let pemasanganItems = document.getElementsByClassName("pemasangan-item");
+            let countCash = 0, countTF = 0, countCashTF = 0;
+            let totalCash = 0, totalTF = 0, totalKeseluruhan = 0;
 
-        let pemasanganContainer = document.getElementById("pemasangan-container");
-        let pemasanganItems = pemasanganContainer.getElementsByClassName("pemasangan-item");
+            for (let item of pemasanganItems) {
+                let jenisPembayaran = item.querySelector(".jenis_pembayaran").value;
+                let bayaran = parseInt(item.querySelector(".bayaran").value) || 0;
 
-        let totalPemasangan = pemasanganItems.length;
-        let paketData = {};
+                totalKeseluruhan += bayaran;
 
-        for (let item of pemasanganItems) {
-            let paket = item.querySelector(".jenis_paket").value;
-            let namaTeam = item.querySelector(".nama_team").value.trim();
-            let ipRouter = item.querySelector(".ip_router").value.trim();
-
-            let data = `Nama : ${item.querySelector(".nama").value.trim()}
-id member : ${item.querySelector(".id_member").value.trim()}
-Ip Onu : ${item.querySelector(".ip_onu").value.trim()}
-${ipRouter ? `Ip Router : ${ipRouter}\n` : ""}Radio/Signal : ${item.querySelector(".radio_signal").value.trim()}
-Alamat : ${item.querySelector(".alamat").value.trim()}
-No hp : ${item.querySelector(".no_hp").value.trim()}
-Bayaran : ${item.querySelector(".bayaran").value.trim()}
-Jenis pembayaran : ${item.querySelector(".jenis_pembayaran").value.trim()}`;
-
-            if (!paketData[paket]) paketData[paket] = {};
-            if (!paketData[paket][namaTeam]) paketData[paket][namaTeam] = [];
-            paketData[paket][namaTeam].push(data);
-        }
-
-        let totalUangKeseluruhan = document.getElementById("total_uang_keseluruhan").value.trim();
-        let totalTF = document.getElementById("total_tf").value.trim();
-        let totalCash = document.getElementById("total_cash").value.trim();
-        let countCash = document.getElementById("count_cash").textContent.trim();
-        let countTF = document.getElementById("count_tf").textContent.trim();
-        let countCashTF = document.getElementById("count_cash_tf").textContent.trim();
-
-        let pesan = `*Laporan Pemasangan*\n*${formattedTanggal}*\n\n`;
-
-        for (let paket in paketData) {
-            pesan += `*Paket ${paket}*\n`;
-            for (let team in paketData[paket]) {
-                pesan += `*Team : ${team || "-"}*\n\n`;
-                paketData[paket][team].forEach((data, index) => {
-                    pesan += `${index + 1}. ${data}\n\n`;
-                });
+                if (jenisPembayaran === "Cash") {
+                    countCash++;
+                    totalCash += bayaran;
+                } else if (jenisPembayaran === "TF") {
+                    countTF++;
+                    totalTF += bayaran;
+                } else if (jenisPembayaran === "Cash+TF") {
+                    countCashTF++;
+                }
             }
+
+            document.getElementById("total_pemasangan").textContent = pemasanganItems.length;
+            document.getElementById("count_cash").textContent = countCash;
+            document.getElementById("count_tf").textContent = countTF;
+            document.getElementById("count_cash_tf").textContent = countCashTF;
+            document.getElementById("total_cash").value = totalCash;
+            document.getElementById("total_tf").value = totalTF;
+            document.getElementById("total_uang_keseluruhan").value = totalKeseluruhan;
         }
-
-        pesan += `*Total Pemasangan : ${totalPemasangan}*\n\n`;
-
-        pesan += `*Rincian Pembayaran*\n`;
-        pesan += `Cash : ${countCash}\n`;
-        pesan += `TF : ${countTF}\n`;
-        pesan += `Cash+TF : ${countCashTF}\n\n`;
-
-        pesan += `*Total Uang Keseluruhan :* ${totalUangKeseluruhan}\n`;
-        pesan += `*Total TF :* ${totalTF}\n`;
-        pesan += `*Total Uang Cash Keseluruhan :* ${totalCash}`;
-
-        let encodedPesan = encodeURIComponent(pesan);
-        window.open(`https://wa.me/?text=${encodedPesan}`, "_blank");
-    }
-
-
     </script>
 </body>
 </html>

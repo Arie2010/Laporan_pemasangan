@@ -118,14 +118,26 @@
                 <label>Bayaran:</label>
                 <input type="number" class="bayaran" oninput="updatePembayaran()"><br>
                 <label>Jenis Pembayaran:</label>
-                <select class="jenis_pembayaran" onchange="updatePembayaran()">
+                <select class="jenis_pembayaran" onchange="toggleCashTF(this)">
                     <option value="Cash">Cash</option>
                     <option value="TF">TF</option>
                     <option value="Cash+TF">Cash+TF</option>
                 </select><br>
+                <div class="cash-tf-container" style="display: none;">
+                    <label>Cash Amount:</label>
+                    <input type="number" class="cash_amount" oninput="updatePembayaran()"><br>
+                    <label>TF Amount:</label>
+                    <input type="number" class="tf_amount" oninput="updatePembayaran()"><br>
+                </div>
             `;
 
             container.appendChild(div);
+            updatePembayaran();
+        }
+
+        function toggleCashTF(select) {
+            let container = select.parentElement.querySelector('.cash-tf-container');
+            container.style.display = select.value === 'Cash+TF' ? 'block' : 'none';
             updatePembayaran();
         }
 
@@ -142,6 +154,8 @@
             for (let item of pemasanganItems) {
                 let jenisPembayaran = item.querySelector(".jenis_pembayaran").value;
                 let bayaran = parseInt(item.querySelector(".bayaran").value) || 0;
+                let cashAmount = parseInt(item.querySelector(".cash_amount")?.value) || 0;
+                let tfAmount = parseInt(item.querySelector(".tf_amount")?.value) || 0;
 
                 totalKeseluruhan += bayaran;
 
@@ -153,10 +167,11 @@
                     totalTF += bayaran;
                 } else if (jenisPembayaran === "Cash+TF") {
                     countCashTF++;
+                    totalCash += cashAmount;
+                    totalTF += tfAmount;
                 }
             }
 
-            document.getElementById("total_pemasangan").textContent = pemasanganItems.length;
             document.getElementById("count_cash").textContent = countCash;
             document.getElementById("count_tf").textContent = countTF;
             document.getElementById("count_cash_tf").textContent = countCashTF;

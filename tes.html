@@ -85,68 +85,6 @@
         <p>Noted | Jika bagian input yang tidak diperlukan harap dikosongkan saja | Created ©ArieID2025</p>
     </div>
     
-<script>
-    function kirimWhatsAppGrup() {
-        let tanggal = document.getElementById("tanggal").value;
-        let pemasanganItems = document.getElementsByClassName("pemasangan-item");
-        let laporan = `*Laporan Pemasangan*\n*Minggu, ${tanggal}*\n\n`;
-
-        let paketData = {
-            "Ftth Subsidi": [],
-            "Ftth Non Subsidi": [],
-            "Paket UpTo Kolektif": []
-        };
-
-        for (let item of pemasanganItems) {
-            let jenisPaket = item.querySelector(".jenis_paket").value;
-            let namaTeam = item.querySelector(".nama_team").value;
-            let nama = item.querySelector(".nama").value;
-            let idMember = item.querySelector(".id_member").value;
-            let ipOnu = item.querySelector(".ip_onu").value;
-            let ipRouter = item.querySelector(".ip_router").value;
-            let radioSignal = item.querySelector(".radio_signal").value;
-            let alamat = item.querySelector(".alamat").value;
-            let noHp = item.querySelector(".no_hp").value;
-            let bayaran = item.querySelector(".bayaran").value || 0;
-            let jenisPembayaran = item.querySelector(".jenis_pembayaran").value;
-
-            let pemasanganDetail = 
-                `1. *Nama*: ${nama}\n` +
-                `   *ID Member*: ${idMember}\n` +
-                `   *IP ONU*: ${ipOnu}\n` +
-                `   *IP Router*: ${ipRouter}\n` +
-                `   *Radio/Signal*: ${radioSignal}\n` +
-                `   *Alamat*: ${alamat}\n` +
-                `   *No HP*: ${noHp}\n` +
-                `   *Bayaran*: ${bayaran}\n` +
-                `   *Jenis Pembayaran*: ${jenisPembayaran}\n`;
-
-            paketData[jenisPaket].push(`*Team: ${namaTeam}*\n${pemasanganDetail}`);
-        }
-
-        // Menyusun laporan berdasarkan jenis paket
-        for (let [paket, data] of Object.entries(paketData)) {
-            if (data.length > 0) {
-                laporan += `*Paket ${paket}*\n${data.join("\n")}\n`;
-            }
-        }
-
-        // Menambahkan ringkasan total pemasangan dan pembayaran
-        laporan += `\n*Total Pemasangan:* ${pemasanganItems.length}\n\n`;
-        laporan += `*Rincian Pembayaran*\n`;
-        laporan += `Cash: ${document.getElementById("count_cash").textContent}\n`;
-        laporan += `TF: ${document.getElementById("count_tf").textContent}\n`;
-        laporan += `Cash+TF: ${document.getElementById("count_cash_tf").textContent}\n\n`;
-        laporan += `*Total Uang Keseluruhan:* ${document.getElementById("total_uang_keseluruhan").value}\n`;
-        laporan += `*Total TF:* ${document.getElementById("total_tf").value}\n`;
-        laporan += `*Total Uang Cash Keseluruhan:* ${document.getElementById("total_cash").value}\n`;
-
-        // Membuka WhatsApp dengan pesan yang sudah disiapkan
-        let groupLink = "https://wa.me/?text=" + encodeURIComponent(laporan);
-        window.open(groupLink, "_blank");
-    }
-</script>
-    
     <script>
         function tambahPemasangan() {
             let container = document.getElementById("pemasangan-container");
@@ -185,6 +123,12 @@
                     <option value="TF">TF</option>
                     <option value="Cash+TF">Cash+TF</option>
                 </select><br>
+                <div class="cash_tf" style="display:none;">
+                    <label>Nominal Cash:</label>
+                    <input type="number" class="nominal_cash" oninput="updatePembayaran()"><br>
+                    <label>Nominal TF:</label>
+                    <input type="number" class="nominal_tf" oninput="updatePembayaran()"><br>
+                </div>
             `;
 
             container.appendChild(div);
@@ -204,6 +148,8 @@
             for (let item of pemasanganItems) {
                 let jenisPembayaran = item.querySelector(".jenis_pembayaran").value;
                 let bayaran = parseInt(item.querySelector(".bayaran").value) || 0;
+                let nominalCash = parseInt(item.querySelector(".nominal_cash")?.value) || 0;
+                let nominalTF = parseInt(item.querySelector(".nominal_tf")?.value) || 0;
 
                 totalKeseluruhan += bayaran;
 
@@ -215,6 +161,8 @@
                     totalTF += bayaran;
                 } else if (jenisPembayaran === "Cash+TF") {
                     countCashTF++;
+                    totalCash += nominalCash;
+                    totalTF += nominalTF;
                 }
             }
 

@@ -154,6 +154,9 @@
         let ip_onu = pemasanganItems[i].querySelector(".ip_onu").value.trim();
         if (ip_onu) itemPesan += `   *IP ONU:* ${ip_onu}\n`;
 
+        let ip_router = pemasanganItems[i].querySelector(".ip_router").value.trim();
+        if (ip_router) itemPesan += `   *IP Router:* ${ip_router}\n`;
+
         let radio_signal = pemasanganItems[i].querySelector(".radio_signal").value.trim();
         if (radio_signal) itemPesan += `   *Radio/Signal:* ${radio_signal}\n`;
 

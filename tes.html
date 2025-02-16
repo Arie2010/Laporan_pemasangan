@@ -128,7 +128,7 @@
                 pemasanganDetail += `   *IP Router*: ${ipRouter}\n`;
             }
 
-            paketData[jenisPaket].push(`*Team: ${namaTeam}*\n${pemasanganDetail}`);
+            paketData[jenisPaket].push(`*Team: ${namaTeam}*\n\n${pemasanganDetail}`);
         }
 
         // Menyusun laporan berdasarkan jenis paket
@@ -223,7 +223,6 @@
                 } else if (jenisPembayaran === "Cash+TF") {
                     countCashTF++;
                 }
-                // laporan += `\n--------------------------\n\n`; // Tambahkan pemisah antar pemasangan
             }
 
             document.getElementById("total_pemasangan").textContent = pemasanganItems.length;

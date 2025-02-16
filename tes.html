@@ -36,6 +36,9 @@
         button:hover {
             background-color: #45a049;
         }
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -96,12 +99,18 @@
                 <input type="text" class="no_hp"><br>
                 <label>Jenis Pembayaran:</label>
                 <select class="jenis_pembayaran" onchange="updatePembayaran()">
+                    <option value="">Pilih Pembayaran</option>
                     <option value="Cash">Cash</option>
                     <option value="TF">TF</option>
                     <option value="Cash+TF">Cash+TF</option>
                 </select><br>
-                <label>Nominal Bayaran:</label>
-                <input type="number" class="bayaran" oninput="updatePembayaran()"><br>
+
+                <div class="bayaran-container hidden">
+                    <label class="label-cash hidden">Nominal Cash:</label>
+                    <input type="number" class="bayaran_cash hidden" oninput="updatePembayaran()"><br>
+                    <label class="label-tf hidden">Nominal TF:</label>
+                    <input type="number" class="bayaran_tf hidden" oninput="updatePembayaran()"><br>
+                </div>
             `;
 
             container.appendChild(div);
@@ -115,21 +124,41 @@
 
             for (let item of pemasanganItems) {
                 let jenisPembayaran = item.querySelector(".jenis_pembayaran").value;
-                let bayaran = parseInt(item.querySelector(".bayaran").value) || 0;
-
-                totalKeseluruhan += bayaran;
+                let bayaranCash = item.querySelector(".bayaran_cash");
+                let bayaranTF = item.querySelector(".bayaran_tf");
+                let labelCash = item.querySelector(".label-cash");
+                let labelTF = item.querySelector(".label-tf");
 
                 if (jenisPembayaran === "Cash") {
                     countCash++;
-                    totalCash += bayaran;
+                    bayaranCash.classList.remove("hidden");
+                    labelCash.classList.remove("hidden");
+                    bayaranTF.classList.add("hidden");
+                    labelTF.classList.add("hidden");
+                    totalCash += parseInt(bayaranCash.value) || 0;
                 } else if (jenisPembayaran === "TF") {
                     countTF++;
-                    totalTF += bayaran;
+                    bayaranTF.classList.remove("hidden");
+                    labelTF.classList.remove("hidden");
+                    bayaranCash.classList.add("hidden");
+                    labelCash.classList.add("hidden");
+                    totalTF += parseInt(bayaranTF.value) || 0;
                 } else if (jenisPembayaran === "Cash+TF") {
                     countCashTF++;
-                    totalCash += bayaran / 2;
-                    totalTF += bayaran / 2;
+                    bayaranCash.classList.remove("hidden");
+                    labelCash.classList.remove("hidden");
+                    bayaranTF.classList.remove("hidden");
+                    labelTF.classList.remove("hidden");
+                    totalCash += parseInt(bayaranCash.value) || 0;
+                    totalTF += parseInt(bayaranTF.value) || 0;
+                } else {
+                    bayaranCash.classList.add("hidden");
+                    labelCash.classList.add("hidden");
+                    bayaranTF.classList.add("hidden");
+                    labelTF.classList.add("hidden");
                 }
+
+                totalKeseluruhan = totalCash + totalTF;
             }
 
             document.getElementById("total_pemasangan").textContent = pemasanganItems.length;
@@ -139,31 +168,6 @@
             document.getElementById("total_cash").value = totalCash;
             document.getElementById("total_tf").value = totalTF;
             document.getElementById("total_uang_keseluruhan").value = totalKeseluruhan;
-        }
-
-        function kirimWhatsAppGrup() {
-            let tanggal = document.getElementById("tanggal").value;
-            let pemasanganItems = document.getElementsByClassName("pemasangan-item");
-            let laporan = `*Laporan Pemasangan*\n*Minggu, ${tanggal}*\n\n`;
-
-            for (let item of pemasanganItems) {
-                let namaTeam = item.querySelector(".nama_team").value;
-                let nama = item.querySelector(".nama").value;
-                let idMember = item.querySelector(".id_member").value;
-                let ipOnu = item.querySelector(".ip_onu").value;
-                let ipRouter = item.querySelector(".ip_router").value;
-                let radioSignal = item.querySelector(".radio_signal").value;
-                let alamat = item.querySelector(".alamat").value;
-                let noHp = item.querySelector(".no_hp").value;
-
-                laporan += `*Team: ${namaTeam}*\n\n`;
-                laporan += `*Nama:* ${nama}\n*ID Member:* ${idMember}\n*IP ONU:* ${ipOnu}\n`;
-                if (ipRouter) laporan += `*IP Router:* ${ipRouter}\n`;
-                laporan += `*Radio/Signal:* ${radioSignal}\n*Alamat:* ${alamat}\n*No HP:* ${noHp}\n\n`;
-            }
-
-            let groupLink = "https://wa.me/?text=" + encodeURIComponent(laporan);
-            window.open(groupLink, "_blank");
         }
     </script>
 </body>

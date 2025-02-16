@@ -115,10 +115,17 @@
                 `   *ID Member*: ${idMember}\n` +
                 
                 // Hanya menampilkan salah satu dari IP ONU atau IP Router, tergantung mana yang diisi
-            if (ipOnu && !ipRouter) {
-                pemasanganDetail += `   *IP ONU*: ${ipOnu}\n`;
-            } else if (ipRouter && !ipOnu) {
-                pemasanganDetail += `   *IP Router*: ${ipRouter}\n`;
+                if (ipOnu) {
+    pemasanganDetail += `   *IP ONU*: ${ipOnu}\n`;
+}
+if (ipRouter) {
+    pemasanganDetail += `   *IP Router*: ${ipRouter}\n`;
+}
+            
+        //    if (ipOnu && !ipRouter) {
+            //    pemasanganDetail += `   *IP ONU*: ${ipOnu}\n`;
+         //   } else if (ipRouter && !ipOnu) {
+           //     pemasanganDetail += `   *IP Router*: ${ipRouter}\n`;
                 
             pemasanganDetail += 
                 `   *Radio/Signal*: ${radioSignal}\n` +

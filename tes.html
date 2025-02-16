@@ -87,24 +87,34 @@
     
 <script>
     function kirimWhatsAppGrup() {
-        // Ambil nilai tanggal dari input
-let tanggalInput = document.getElementById("tanggal").value;
-let tanggalObj = new Date(tanggalInput);
+    // Ambil nilai tanggal dari input
+    let tanggalInput = document.getElementById("tanggal").value;
+    if (!tanggalInput) {
+        alert("Tanggal belum diisi!");
+        return; // Hentikan fungsi jika tanggal kosong
+    }
 
-// Array nama hari dan bulan
-let namaHari = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+    let tanggalObj = new Date(tanggalInput);
+    if (isNaN(tanggalObj.getTime())) {
+        alert("Format tanggal tidak valid!");
+        return; // Hentikan fungsi jika tanggal tidak valid
+    }
 
-// Ambil nama hari, tanggal, bulan, dan tahun
-let hari = namaHari[tanggalObj.getDay()];
-let tanggal = tanggalObj.getDate();
-let bulan = tanggalObj.getMonth() + 1; // Bulan dimulai dari 0, jadi perlu ditambah 1
-let tahun = tanggalObj.getFullYear();
+    // Array nama hari dan bulan
+    let namaHari = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
 
-// Format tanggal menjadi Hari, tanggal.bulan.tahun
-let formattedTanggal = `${hari}, ${tanggal}.${bulan}.${tahun}`;
+    // Ambil nama hari, tanggal, bulan, dan tahun
+    let hari = namaHari[tanggalObj.getDay()];
+    let tanggal = tanggalObj.getDate();
+    let bulan = tanggalObj.getMonth() + 1; // Bulan dimulai dari 0, jadi perlu ditambah 1
+    let tahun = tanggalObj.getFullYear();
 
-// Gunakan tanggal yang telah diformat di laporan
-let laporan = `*Laporan Pemasangan*\n*${formattedTanggal}*\n\n`;
+    // Format tanggal menjadi Hari, tanggal.bulan.tahun
+    let formattedTanggal = `${hari}, ${tanggal}.${bulan}.${tahun}`;
+
+    // Gunakan tanggal yang telah diformat di laporan
+    let laporan = `*Laporan Pemasangan*\n*${formattedTanggal}*\n\n`;
+
         
       //  let tanggal = document.getElementById("tanggal").value;
        // let pemasanganItems = document.getElementsByClassName("pemasangan-item");

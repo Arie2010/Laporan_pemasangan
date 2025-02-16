@@ -86,61 +86,14 @@
     </div>
 
     <script>
-        function tambahPemasangan() {
-            let container = document.getElementById("pemasangan-container");
-            let div = document.createElement("div");
-            div.classList.add("pemasangan-item");
-
-            div.innerHTML = `
-                <button class="remove-btn" onclick="hapusPemasangan(this)">X</button>
-                <label>Nama Team:</label>
-                <input type="text" class="nama_team"><br>
-                <label>Jenis Paket:</label>
-                <select class="jenis_paket">
-                    <option value="Ftth Subsidi">Ftth Subsidi</option>
-                    <option value="Ftth Non Subsidi">Ftth Non Subsidi</option>
-                    <option value="Paket UpTo Kolektif">Paket UpTo Kolektif</option>
-                </select><br>
-                <label>Nama:</label>
-                <input type="text" class="nama"><br>
-                <label>ID Member:</label>
-                <input type="text" class="id_member"><br>
-                <label>IP ONU:</label>
-                <input type="text" class="ip_onu"><br>
-                <label>Radio/Signal:</label>
-                <input type="text" class="radio_signal"><br>
-                <label>Alamat:</label>
-                <textarea class="alamat"></textarea><br>
-                <label>No HP:</label>
-                <input type="text" class="no_hp"><br>
-                <label>Bayaran:</label>
-                <input type="number" class="bayaran" oninput="updatePembayaran()"><br>
-                <label>Jenis Pembayaran:</label>
-                <select class="jenis_pembayaran" onchange="toggleCashTF(this)">
-                    <option value="Cash">Cash</option>
-                    <option value="TF">TF</option>
-                    <option value="Cash+TF">Cash+TF</option>
-                </select><br>
-                <div class="cash-tf-container" style="display: none;">
-                    <label>Cash Amount:</label>
-                    <input type="number" class="cash_amount" oninput="updatePembayaran()"><br>
-                    <label>TF Amount:</label>
-                    <input type="number" class="tf_amount" oninput="updatePembayaran()"><br>
-                </div>
-            `;
-
-            container.appendChild(div);
-            updatePembayaran();
-        }
-
-        function updatePembayaran() {
-            let pemasanganItems = document.getElementsByClassName("pemasangan-item");
-            document.getElementById("total_pemasangan").textContent = pemasanganItems.length;
-        }
-
         function kirimWhatsAppGrup() {
             let tanggal = document.getElementById("tanggal").value;
             let pemasanganItems = document.getElementsByClassName("pemasangan-item");
+            let totalPemasangan = pemasanganItems.length;
+            let totalCash = document.getElementById("total_cash").value;
+            let totalTF = document.getElementById("total_tf").value;
+            let totalKeseluruhan = document.getElementById("total_uang_keseluruhan").value;
+
             let pesan = `*Laporan Pemasangan*\n*Minggu, ${tanggal}*\n\n`;
 
             for (let i = 0; i < pemasanganItems.length; i++) {
@@ -160,11 +113,11 @@
                 pesan += `${i+1}. Nama : ${nama}\nID Member : ${idMember}\nIP ONU : ${ipOnu}\nRadio/Signal : ${radioSignal}\nAlamat : ${alamat}\nNo HP : ${noHp}\nBayaran : ${bayaran}\nJenis Pembayaran : ${jenisPembayaran}\n\n`;
             }
 
-            let totalKeseluruhan = document.getElementById("total_uang_keseluruhan").value;
-            let totalCash = document.getElementById("total_cash").value;
-            let totalTF = document.getElementById("total_tf").value;
-
-            pesan += `*Total Uang Keseluruhan :* ${totalKeseluruhan}\n*Total TF :* ${totalTF}\n*Total Cash Keseluruhan :* ${totalCash}`;
+            pesan += `*Total Pemasangan : ${totalPemasangan}*\n\n`;
+            pesan += `*Rincian Pembayaran*\nCash : ${totalCash}\nTF : ${totalTF}\nCash+TF : ${parseInt(totalCash) + parseInt(totalTF)}\n\n`;
+            pesan += `*Total Uang Keseluruhan :* ${totalKeseluruhan}\n`;
+            pesan += `*Total TF :* ${totalTF}\n`;
+            pesan += `*Total Uang Cash Keseluruhan :* ${totalCash}\n`;
 
             let groupLink = "https://wa.me/?text=" + encodeURIComponent(pesan);
             window.open(groupLink, "_blank");

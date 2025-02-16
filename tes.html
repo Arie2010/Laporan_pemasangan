@@ -152,12 +152,8 @@
         laporan += `*Total Uang Cash Keseluruhan:* ${document.getElementById("total_cash").value}\n`;
 
         // Membuka WhatsApp dengan pesan yang sudah disiapkan
-       let groupLink = "https://wa.me/?text=" + encodeURIComponent(laporan);
-        setTimeout(() => {
-    window.location.href = groupLink;
-}, 500);
-        
-    //    window.open(groupLink, "_blank");
+       let groupLink = "https://wa.me/?text=" + encodeURIComponent(laporan);     
+        window.open(groupLink, "_blank");
     }
 </script>
     

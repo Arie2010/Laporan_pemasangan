@@ -107,6 +107,8 @@
                 <input type="text" class="id_member"><br>
                 <label>IP ONU:</label>
                 <input type="text" class="ip_onu"><br>
+                <label>IP Router:</label>
+                <input type="text" class="ip_router"><br>
                 <label>Radio/Signal:</label>
                 <input type="text" class="radio_signal"><br>
                 <label>Alamat:</label>
@@ -144,10 +146,12 @@
             for (let item of pemasanganItems) {
                 let paket = item.querySelector(".jenis_paket").value;
                 let namaTeam = item.querySelector(".nama_team").value.trim();
+                let ipRouter = item.querySelector(".ip_router").value.trim();
                 let data = `
                 Nama: ${item.querySelector(".nama").value.trim()}
                 ID Member: ${item.querySelector(".id_member").value.trim()}
                 IP ONU: ${item.querySelector(".ip_onu").value.trim()}
+                ${ipRouter ? `IP Router: ${ipRouter}` : ""}
                 Radio/Signal: ${item.querySelector(".radio_signal").value.trim()}
                 Alamat: ${item.querySelector(".alamat").value.trim()}
                 No HP: ${item.querySelector(".no_hp").value.trim()}
@@ -161,7 +165,7 @@
                 if (!paketData[paket][namaTeam]) {
                     paketData[paket][namaTeam] = [];
                 }
-                paketData[paket][namaTeam].push(data);
+                paketData[paket][namaTeam].push(data.trim());
             }
 
             let pesan = `*Laporan Pemasangan*\n*${formattedTanggal}*\n\n`;

@@ -158,9 +158,22 @@ if (ipRouter) {
         laporan += `*Total TF:* ${document.getElementById("total_tf").value}\n`;
         laporan += `*Total Uang Cash Keseluruhan:* ${document.getElementById("total_cash").value}\n`;
 
+    if (!laporan.trim()) {
+    alert("Laporan kosong! Pastikan semua data diisi.");
+    return;
+    }
+    
+
         // Membuka WhatsApp dengan pesan yang sudah disiapkan
-       let groupLink = "https://wa.me/?text=" + encodeURIComponent(laporan);     
-        window.open(groupLink, "_blank");
+       let groupLink = "https://wa.me/?text=" + encodeURIComponent(laporan);    
+    console.log("WhatsApp Link:", groupLink);
+alert("Cek Link WhatsApp: " + groupLink);
+    
+    setTimeout(() => {
+    window.location.href = groupLink;
+}, 500);
+    
+       // window.open(groupLink, "_blank");
     }
 </script>
     

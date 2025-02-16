@@ -55,16 +55,6 @@
             font-size: 14px;
             cursor: pointer;
         }
-        .hidden {
-            display: none;
-        }
-        .flex-container {
-            display: flex;
-            gap: 10px;
-        }
-        .flex-container div {
-            flex: 1;
-        }
     </style>
 </head>
 <body>
@@ -92,94 +82,103 @@
         <input type="text" id="total_cash" readonly><br>
 
         <button type="button" onclick="kirimWhatsAppGrup()">Kirim ke WhatsApp</button>
+        <p>Noted | Jika bagian input yang tidak diperlukan harap dikosongkan saja | Created ©ArieID2025</p>
     </div>
     
-    <script>
-        function tambahPemasangan() {
-            let container = document.getElementById("pemasangan-container");
-            let div = document.createElement("div");
-            div.classList.add("pemasangan-item");
+<script>
+    function tambahPemasangan() {
+        let container = document.getElementById("pemasangan-container");
+        let div = document.createElement("div");
+        div.classList.add("pemasangan-item");
 
-            div.innerHTML = `
-                <button class="remove-btn" onclick="hapusPemasangan(this)">X</button>
-                <label>Nama Team:</label>
-                <input type="text" class="nama_team"><br>
-                <label>Jenis Paket:</label>
-                <select class="jenis_paket">
-                    <option value="Ftth Subsidi">Ftth Subsidi</option>
-                    <option value="Ftth Non Subsidi">Ftth Non Subsidi</option>
-                    <option value="Paket UpTo Kolektif">Paket UpTo Kolektif</option>
-                </select><br>
-                <label>Nama:</label>
-                <input type="text" class="nama"><br>
-                <label>ID Member:</label>
-                <input type="text" class="id_member"><br>
-                <label>Alamat:</label>
-                <textarea class="alamat"></textarea><br>
-                <label>No HP:</label>
-                <input type="text" class="no_hp"><br>
-                <label>Jenis Pembayaran:</label>
-                <select class="jenis_pembayaran" onchange="updatePembayaran()">
-                    <option value="">Pilih Pembayaran</option>
-                    <option value="Cash">Cash</option>
-                    <option value="TF">TF</option>
-                    <option value="Cash+TF">Cash+TF</option>
-                </select><br>
+        div.innerHTML = `
+            <button class="remove-btn" onclick="hapusPemasangan(this)">X</button>
+            <label>Nama Team:</label>
+            <input type="text" class="nama_team"><br>
+            <label>Jenis Paket:</label>
+            <select class="jenis_paket">
+                <option value="Ftth Subsidi">Ftth Subsidi</option>
+                <option value="Ftth Non Subsidi">Ftth Non Subsidi</option>
+                <option value="Paket UpTo Kolektif">Paket UpTo Kolektif</option>
+            </select><br>
+            <label>Nama:</label>
+            <input type="text" class="nama"><br>
+            <label>ID Member:</label>
+            <input type="text" class="id_member"><br>
+            <label>Alamat:</label>
+            <textarea class="alamat"></textarea><br>
+            <label>No HP:</label>
+            <input type="text" class="no_hp"><br>
+            <label>Jenis Pembayaran:</label>
+            <select class="jenis_pembayaran" onchange="toggleBayaran(this)">
+                <option value="Cash">Cash</option>
+                <option value="TF">TF</option>
+                <option value="Cash+TF">Cash+TF</option>
+            </select><br>
+            <div class="bayaran-container"></div>
+        `;
 
-                <div class="flex-container hidden">
-                    <div>
-                        <label>Nominal Cash:</label>
-                        <input type="number" class="bayaran-cash" oninput="updatePembayaran()">
-                    </div>
-                    <div>
-                        <label>Nominal TF:</label>
-                        <input type="number" class="bayaran-tf" oninput="updatePembayaran()">
-                    </div>
-                </div>
+        container.appendChild(div);
+        updatePembayaran();
+    }
+
+    function hapusPemasangan(button) {
+        button.parentElement.remove();
+        updatePembayaran();
+    }
+
+    function toggleBayaran(select) {
+        let container = select.parentElement.querySelector(".bayaran-container");
+        container.innerHTML = "";
+
+        if (select.value === "Cash") {
+            container.innerHTML = `<label>Bayaran Cash:</label><input type="number" class="bayaran_cash" oninput="updatePembayaran()">`;
+        } else if (select.value === "TF") {
+            container.innerHTML = `<label>Bayaran TF:</label><input type="number" class="bayaran_tf" oninput="updatePembayaran()">`;
+        } else if (select.value === "Cash+TF") {
+            container.innerHTML = `
+                <label>Bayaran Cash:</label><input type="number" class="bayaran_cash" oninput="updatePembayaran()">
+                <label>Bayaran TF:</label><input type="number" class="bayaran_tf" oninput="updatePembayaran()">
             `;
+        }
+    }
 
-            container.appendChild(div);
-            updatePembayaran();
+    function updatePembayaran() {
+        let pemasanganItems = document.getElementsByClassName("pemasangan-item");
+        let countCash = 0, countTF = 0, countCashTF = 0;
+        let totalCash = 0, totalTF = 0, totalKeseluruhan = 0;
+
+        for (let item of pemasanganItems) {
+            let jenisPembayaran = item.querySelector(".jenis_pembayaran").value;
+            let cash = parseInt(item.querySelector(".bayaran_cash")?.value) || 0;
+            let tf = parseInt(item.querySelector(".bayaran_tf")?.value) || 0;
+
+            totalKeseluruhan += cash + tf;
+            totalCash += cash;
+            totalTF += tf;
+
+            if (jenisPembayaran === "Cash") countCash++;
+            else if (jenisPembayaran === "TF") countTF++;
+            else if (jenisPembayaran === "Cash+TF") countCashTF++;
         }
 
-        function hapusPemasangan(button) {
-            button.parentElement.remove();
-            updatePembayaran();
-        }
+        document.getElementById("total_pemasangan").textContent = pemasanganItems.length;
+        document.getElementById("count_cash").textContent = countCash;
+        document.getElementById("count_tf").textContent = countTF;
+        document.getElementById("count_cash_tf").textContent = countCashTF;
+        document.getElementById("total_cash").value = totalCash;
+        document.getElementById("total_tf").value = totalTF;
+        document.getElementById("total_uang_keseluruhan").value = totalKeseluruhan;
+    }
 
-        function updatePembayaran() {
-            let pemasanganItems = document.getElementsByClassName("pemasangan-item");
-            let countCash = 0, countTF = 0, countCashTF = 0;
-            let totalCash = 0, totalTF = 0, totalKeseluruhan = 0;
+    function kirimWhatsAppGrup() {
+        let tanggal = document.getElementById("tanggal").value;
+        let totalPemasangan = document.getElementById("total_pemasangan").textContent;
+        let laporan = `*Laporan Pemasangan*\n*Minggu, ${tanggal}*\n\nTotal Pemasangan: ${totalPemasangan}`;
 
-            for (let item of pemasanganItems) {
-                let jenisPembayaran = item.querySelector(".jenis_pembayaran").value;
-                let flexContainer = item.querySelector(".flex-container");
-                let bayaranCashInput = item.querySelector(".bayaran-cash");
-                let bayaranTfInput = item.querySelector(".bayaran-tf");
-
-                if (jenisPembayaran === "Cash") {
-                    flexContainer.classList.add("hidden");
-                    countCash++;
-                } else if (jenisPembayaran === "TF") {
-                    flexContainer.classList.add("hidden");
-                    countTF++;
-                } else if (jenisPembayaran === "Cash+TF") {
-                    flexContainer.classList.remove("hidden");
-                    countCashTF++;
-                    totalCash += parseInt(bayaranCashInput.value) || 0;
-                    totalTF += parseInt(bayaranTfInput.value) || 0;
-                }
-            }
-
-            document.getElementById("total_pemasangan").textContent = pemasanganItems.length;
-            document.getElementById("count_cash").textContent = countCash;
-            document.getElementById("count_tf").textContent = countTF;
-            document.getElementById("count_cash_tf").textContent = countCashTF;
-            document.getElementById("total_cash").value = totalCash;
-            document.getElementById("total_tf").value = totalTF;
-            document.getElementById("total_uang_keseluruhan").value = totalCash + totalTF;
-        }
-    </script>
+        let groupLink = "https://wa.me/?text=" + encodeURIComponent(laporan);
+        window.open(groupLink, "_blank");
+    }
+</script>
 </body>
 </html>

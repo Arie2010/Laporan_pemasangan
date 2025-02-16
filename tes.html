@@ -113,20 +113,22 @@
             let pemasanganDetail = 
                 `1. *Nama*: ${nama}\n` +
                 `   *ID Member*: ${idMember}\n` +
-             //   `   *IP ONU*: ${ipOnu}\n` +
-             //   `   *IP Router*: ${ipRouter}\n` +
+                
+                // Hanya menampilkan salah satu dari IP ONU atau IP Router, tergantung mana yang diisi
+            if (ipOnu && !ipRouter) {
+                pemasanganDetail += `   *IP ONU*: ${ipOnu}\n`;
+            } else if (ipRouter && !ipOnu) {
+                pemasanganDetail += `   *IP Router*: ${ipRouter}\n`;
+            
                 `   *Radio/Signal*: ${radioSignal}\n` +
                 `   *Alamat*: ${alamat}\n` +
                 `   *No HP*: ${noHp}\n` +
                 `   *Bayaran*: ${bayaran}\n` +
                 `   *Jenis Pembayaran*: ${jenisPembayaran}\n`;
-
-// Hanya menampilkan salah satu dari IP ONU atau IP Router, tergantung mana yang diisi
-            if (ipOnu && !ipRouter) {
-                pemasanganDetail += `   *IP ONU*: ${ipOnu}\n`;
-            } else if (ipRouter && !ipOnu) {
-                pemasanganDetail += `   *IP Router*: ${ipRouter}\n`;
             }
+
+            //   `   *IP ONU*: ${ipOnu}\n` +
+             //   `   *IP Router*: ${ipRouter}\n` +
 
             paketData[jenisPaket].push(`*Team: ${namaTeam}*\n\n${pemasanganDetail}`);
         }

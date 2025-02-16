@@ -87,9 +87,28 @@
     
 <script>
     function kirimWhatsAppGrup() {
-        let tanggal = document.getElementById("tanggal").value;
-        let pemasanganItems = document.getElementsByClassName("pemasangan-item");
-        let laporan = `*Laporan Pemasangan*\n*Minggu, ${tanggal}*\n\n`;
+        // Ambil nilai tanggal dari input
+let tanggalInput = document.getElementById("tanggal").value;
+let tanggalObj = new Date(tanggalInput);
+
+// Array nama hari dan bulan
+let namaHari = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+
+// Ambil nama hari, tanggal, bulan, dan tahun
+let hari = namaHari[tanggalObj.getDay()];
+let tanggal = tanggalObj.getDate();
+let bulan = tanggalObj.getMonth() + 1; // Bulan dimulai dari 0, jadi perlu ditambah 1
+let tahun = tanggalObj.getFullYear();
+
+// Format tanggal menjadi Hari, tanggal.bulan.tahun
+let formattedTanggal = `${hari}, ${tanggal}.${bulan}.${tahun}`;
+
+// Gunakan tanggal yang telah diformat di laporan
+let laporan = `*Laporan Pemasangan*\n*${formattedTanggal}*\n\n`;
+        
+      //  let tanggal = document.getElementById("tanggal").value;
+       // let pemasanganItems = document.getElementsByClassName("pemasangan-item");
+      //  let laporan = `*Laporan Pemasangan*\n*Minggu, ${tanggal}*\n\n`;
 
         let paketData = {
             "Ftth Subsidi": [],

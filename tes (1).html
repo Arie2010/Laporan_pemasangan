@@ -136,6 +136,8 @@ let tahun = tanggalObj.getFullYear();
         };
         
         let totalBayaran = 0;
+        let totalTF = 0;
+let totalCash = 0;
         let nomorPemasangan = 1; // Inisialisasi nomor pemasangan
         
         
@@ -153,6 +155,13 @@ let tahun = tanggalObj.getFullYear();
             let jenisPembayaran = item.querySelector(".jenis_pembayaran").value;
 
             totalBayaran += bayaran; // Menambahkan ke total pembayaran
+
+            if (jenisPembayaran === "tf") {
+        totalTF += bayaran;
+    } else if (jenisPembayaran === "cash") {
+        totalCash += bayaran;
+    }
+    }
 
             laporan += `*Paket ${jenisPaket}*\n`;
     laporan += `*Team: ${namaTeam}*\n\n`;

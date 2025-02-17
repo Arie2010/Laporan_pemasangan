@@ -127,6 +127,8 @@ let tahun = tanggalObj.getFullYear();
         return;
     }
 
+        let nomorPemasangan = 1; // Inisialisasi nomor urut
+
         
       //  let tanggal = document.getElementById("tanggal").value;
        // let pemasanganItems = document.getElementsByClassName("pemasangan-item");
@@ -160,7 +162,7 @@ let tahun = tanggalObj.getFullYear();
             
             laporan += `*Paket ${jenisPaket}*\n`;
     laporan += `*Team: ${namaTeam}*\n\n`;
-    laporan += `1. Nama: ${nama}\n`;
+    laporan += `${nomorPemasangan}. Nama: ${nama}\n`; // naikan nomor urut
     laporan += `   ID Member: ${idMember}\n`;
 
     if (ipOnu) laporan += `   IP ONU: ${ipOnu}\n`;
@@ -172,9 +174,8 @@ let tahun = tanggalObj.getFullYear();
     laporan += `   *Bayaran: ${formatRibuan(bayaran)}*\n`; 
     laporan += `   *Jenis Pembayaran: ${jenisPembayaran}*\n\n`;
 
-    nomorPemasangan++; // Tambahkan nomor untuk pemasangan berikutnya
-        
-        }
+    nomorPemasangan++; // Naikkan nomor urut
+    }
 
         // Tambahkan total bayaran di bagian akhir laporan
 // laporan += `*Total Bayaran Keseluruhan:* ${totalBayaran}\n`;

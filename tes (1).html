@@ -87,6 +87,12 @@
     
 <script>
     function kirimWhatsAppGrup() {
+
+        if (!laporan.trim()) {
+    alert("Laporan kosong! Pastikan semua data diisi.");
+    return;
+     }
+        
     // Ambil nilai tanggal dari input
     let tanggalInput = document.getElementById("tanggal").value;
     if (!tanggalInput) {
@@ -246,10 +252,10 @@ laporan += `*Total Uang Cash Keseluruhan:* *${formatRibuan(totalCash)}*\n\n`;
 
 
 
-    if (!laporan.trim()) {
-    alert("Laporan kosong! Pastikan semua data diisi.");
-    return;
-    }
+  //  if (!laporan.trim()) {
+   // alert("Laporan kosong! Pastikan semua data diisi.");
+  //  return;
+  //  }
 
       //  console.log("Tanggal Input:", tanggalInput);
 // console.log("Tanggal yang Diformat:", formattedTanggal);

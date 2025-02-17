@@ -173,23 +173,24 @@ if (ipRouter) {
 
             // Simpan data dengan struktur yang rapi
         if (!paketData[jenisPaket]) {
-            paketData[jenisPaket] = {};
-        }
-        if (!paketData[jenisPaket][namaTeam]) {
-            paketData[jenisPaket][namaTeam] = [];
-        }
+    paketData[jenisPaket] = {};
+}
+if (!paketData[jenisPaket][namaTeam]) {
+    paketData[jenisPaket][namaTeam] = [];
+}
+paketData[jenisPaket][namaTeam].push(pemasanganDetail);
 
-        paketData[jenisPaket][namaTeam].push(pemasanganDetail);
     
            // paketData[jenisPaket].push(`*Team: ${namaTeam}*\n\n${pemasanganDetail}`);
         }
 
         // Menyusun laporan berdasarkan jenis paket
-        for (let [paket, data] of Object.entries(paketData)) {
-            if (data.length > 0) {
-                laporan += `*Paket ${paket}*\n${data.join("\n")}\n`;
-            }
-        }
+        for (let [paket, teams] of Object.entries(paketData)) {
+    laporan += `*Paket ${paket}*\n`;
+    for (let [team, pemasanganList] of Object.entries(teams)) {
+        laporan += `🔹 *Team: ${team}*\n${pemasanganList.join("\n")}\n`;
+    }
+}
 
         // Menambahkan ringkasan total pemasangan dan pembayaran
         laporan += `\n*Total Pemasangan:* ${pemasanganItems.length}\n\n`;

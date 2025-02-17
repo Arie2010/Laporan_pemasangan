@@ -171,13 +171,16 @@ if (ipRouter) {
             //   `   *IP ONU*: ${ipOnu}\n` +
              //   `   *IP Router*: ${ipRouter}\n` +
 
-            if (!paketData[jenisPaket]) {
-}
+            // Simpan data dengan struktur yang rapi
+        if (!paketData[jenisPaket]) {
+            paketData[jenisPaket] = {};
+        }
+        if (!paketData[jenisPaket][namaTeam]) {
+            paketData[jenisPaket][namaTeam] = [];
+        }
 
-// Simpan data pemasangan dengan format paket ditampilkan sebelum setiap tim
-paketData[jenisPaket].push(`*${jenisPaket}*\n\n*Team: ${namaTeam}*\n\n${pemasanganDetail}`);
-            
-
+        paketData[jenisPaket][namaTeam].push(pemasanganDetail);
+    }
            // paketData[jenisPaket].push(`*Team: ${namaTeam}*\n\n${pemasanganDetail}`);
         }
 

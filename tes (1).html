@@ -210,9 +210,13 @@ let tahun = tanggalObj.getFullYear();
    //     }
 
         // Fungsi untuk mengubah angka ke ribuan tanpa angka nol yang tidak perlu dan menambahkan "K"
+// Jika angka = 0, maka tetap tampil "0K"
 function formatRibuan(angka) {
-    let hasil = (angka / 1000).toFixed(3); // Konversi ke ribuan dengan 3 desimal
-    hasil = hasil.replace(/^0+|\.+0+$/g, ""); // Hapus nol di depan dan nol setelah titik
+    let nilai = parseFloat(angka); // Pastikan angka dalam format numerik
+    if (isNaN(nilai) || nilai === 0) return "0K"; // Jika angka 0 atau tidak valid, kembalikan "0K"
+    
+    let hasil = (nilai / 1000).toFixed(3); // Konversi ke ribuan dengan 3 desimal
+    hasil = hasil.replace(/\.?0+$/, ""); // Hapus nol setelah titik jika tidak perlu
     return hasil + "K"; // Tambahkan "K" setelah angka
 }
 

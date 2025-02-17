@@ -220,10 +220,10 @@ function formatRibuan(angka) {
     }
     return angka.toString(); // Jika kurang dari 1000, tetap tampilkan angka asli
 }
-        let totalUangKeseluruhan = parseFloat(document.getElementById("total_uang_keseluruhan").value.trim()) || 0;
+        // Ambil total uang keseluruhan, total TF, dan total cash dari input HTML
+let totalUangKeseluruhan = parseFloat(document.getElementById("total_uang_keseluruhan").value.trim()) || 0;
 let totalTF = parseFloat(document.getElementById("total_tf").value.trim()) || 0;
 let totalCash = parseFloat(document.getElementById("total_cash").value.trim()) || 0;
-
 
         // Menambahkan total pembayaran dengan angka dalam format tebal (*)
 laporan += `Total Pemasangan: *${pemasanganItems.length}*\n\n`;

@@ -211,8 +211,10 @@ let tahun = tanggalObj.getFullYear();
 
         // Fungsi untuk menambahkan "K" setelah angka
 function formatRibuan(angka) {
+    angka = parseFloat(angka) || 0;
     return (angka / 1000) + "K";
 }
+
 
         // Menambahkan total pembayaran dengan angka dalam format tebal (*)
 laporan += `Total Pemasangan: *${pemasanganItems.length}*\n\n`;

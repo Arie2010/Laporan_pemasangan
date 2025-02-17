@@ -133,7 +133,9 @@
             "Ftth Non Subsidi": [],
             "Paket UpTo Kolektif": []
         };
-
+        
+        let totalBayaran = 0;
+        
         for (let item of pemasanganItems) {
             let jenisPaket = item.querySelector(".jenis_paket").value;
             let namaTeam = item.querySelector(".nama_team").value;
@@ -144,42 +146,62 @@
             let radioSignal = item.querySelector(".radio_signal").value;
             let alamat = item.querySelector(".alamat").value;
             let noHp = item.querySelector(".no_hp").value;
-            let bayaran = item.querySelector(".bayaran").value || 0;
+            let bayaran = parseFloat(item.querySelector(".bayaran").value) || 0; // Konversi ke angka
             let jenisPembayaran = item.querySelector(".jenis_pembayaran").value;
 
-            let pemasanganDetail = 
-                `1. *Nama*: ${nama}\n` +
-                `   *ID Member*: ${idMember}\n`;//+
+            totalBayaran += bayaran; // Menambahkan ke total pembayaran
+
+            laporan += `*Paket ${jenisPaket}*\n`;
+    laporan += `*Team: ${namaTeam}*\n\n`;
+    laporan += `1. *Nama*: ${nama}\n`;
+    laporan += `   *ID Member*: ${idMember}\n`;
+
+    if (ipOnu) laporan += `   *IP ONU*: ${ipOnu}\n`;
+    if (ipRouter) laporan += `   *IP Router*: ${ipRouter}\n`;
+
+    laporan += `   *Radio/Signal*: ${radioSignal}\n`;
+    laporan += `   *Alamat*: ${alamat}\n`;
+    laporan += `   *No HP*: ${noHp}\n`;
+    laporan += `   *Bayaran*: ${bayaran}\n`;
+    laporan += `   *Jenis Pembayaran*: ${jenisPembayaran}\n\n`;
+        }
+
+        // Tambahkan total bayaran di bagian akhir laporan
+laporan += `*Total Bayaran Keseluruhan:* ${totalBayaran}\n`;
+
+   //         let pemasanganDetail = 
+  //              `1. *Nama*: ${nama}\n` +
+  //              `   *ID Member*: ${idMember}\n`;//+
                 
-                // Hanya menampilkan salah satu dari IP ONU atau IP Router, tergantung mana yang diisi
-                if (ipOnu) {
-    pemasanganDetail += `   *IP ONU*: ${ipOnu}\n`;
-}
-if (ipRouter) {
-    pemasanganDetail += `   *IP Router*: ${ipRouter}\n`;
-}
+                // Hanya menampilkan salah satu dari IP ONU atau IP Router, tergantung mana yang diis
+  //          if (ipOnu) {
+//    pemasanganDetail += `   *IP ONU*: ${ipOnu}\n`;
+//}
+//if (ipRouter) {
+//    pemasanganDetail += `   *IP Router*: ${ipRouter}\n`;
+//}
 
                 
-            pemasanganDetail += 
-                `   *Radio/Signal*: ${radioSignal}\n` +
-                `   *Alamat*: ${alamat}\n` +
-                `   *No HP*: ${noHp}\n` +
-                `   *Bayaran*: ${bayaran}\n` +
-                `   *Jenis Pembayaran*: ${jenisPembayaran}\n`;
+          //  pemasanganDetail += 
+     //           `   *Radio/Signal*: ${radioSignal}\n` +
+   //             `   *Alamat*: ${alamat}\n` +
+   //             `   *No HP*: ${noHp}\n` +
+   //             `   *Bayaran*: ${bayaran}\n` +
+    //            `   *Jenis Pembayaran*: ${jenisPembayaran}\n`;
             //}
 
             //   `   *IP ONU*: ${ipOnu}\n` +
              //   `   *IP Router*: ${ipRouter}\n` +
 
-            paketData[jenisPaket].push(`*Team: ${namaTeam}*\n\n${pemasanganDetail}`);
-        }
+     //       paketData[jenisPaket].push(`*Team: ${namaTeam}*\n\n${pemasanganDetail}`);
+  //      }
 
         // Menyusun laporan berdasarkan jenis paket
-        for (let [paket, data] of Object.entries(paketData)) {
-            if (data.length > 0) {
-                laporan += `*Paket ${paket}*\n${data.join("\n")}\n`;
-            }
-        }
+   //     for (let [paket, data] of Object.entries(paketData)) {
+   //        if (data.length > 0) {
+     //           laporan += `*Paket ${paket}*\n${data.join("\n")}\n`;
+   //         }
+   //     }
 
         // Menambahkan ringkasan total pemasangan dan pembayaran
         laporan += `\n*Total Pemasangan:* ${pemasanganItems.length}\n\n`;

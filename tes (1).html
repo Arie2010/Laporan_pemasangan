@@ -216,7 +216,7 @@ function formatRibuan(angka) {
     if (isNaN(nilai) || nilai === 0) return "0K"; // Jika angka 0 atau tidak valid, kembalikan "0K"
     
     let hasil = (nilai / 100).toFixed(3); // Konversi ke ribuan dengan 3 desimal
-    hasil = hasil.replace(/\?0+$/ ""); // Hapus nol setelah titik jika tidak perlu
+    hasil = hasil.replace(/\.?0+$/, ""); // Hapus nol setelah titik jika tidak perlu
     return hasil + "K"; // Tambahkan "K" setelah angka
 }
 

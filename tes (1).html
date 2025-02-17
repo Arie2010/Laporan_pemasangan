@@ -219,15 +219,21 @@ function formatRibuan(angka) {
     return hasil + "K"; // Tambahkan "K" setelah angka
 }
 
+// Pastikan mengambil nilai terbaru dari input sebelum memformatnya
+let totalUangKeseluruhan = parseFloat(document.getElementById("total_uang_keseluruhan").value) || 0;
+let totalTF = parseFloat(document.getElementById("total_tf").value) || 0;
+let totalCash = parseFloat(document.getElementById("total_cash").value) || 0;
+
 // Menambahkan total pembayaran dengan angka dalam format tebal (*)
-laporan += `Total Pemasangan: *${pemasanganItems.length}*\n\n`;
-laporan += `Rincian Pembayaran\n`;
-laporan += `Cash: *${document.getElementById("count_cash").textContent}*\n`;
-laporan += `TF: *${document.getElementById("count_tf").textContent}*\n`;
-laporan += `Cash+TF: *${document.getElementById("count_cash_tf").textContent}*\n\n`;
-laporan += `Total Uang Keseluruhan: *${formatRibuan(document.getElementById("total_uang_keseluruhan").value)}*\n\n`;
-laporan += `Total TF: *${formatRibuan(document.getElementById("total_tf").value)}*\n\n`;
-laporan += `Total Uang Cash Keseluruhan: *${formatRibuan(document.getElementById("total_cash").value)}*\n\n`;
+laporan += `*Total Pemasangan:* *${pemasanganItems.length}*\n\n`;
+laporan += `*Rincian Pembayaran*\n`;
+laporan += `*Cash:* *${document.getElementById("count_cash").textContent}*\n`;
+laporan += `*TF:* *${document.getElementById("count_tf").textContent}*\n`;
+laporan += `*Cash+TF:* *${document.getElementById("count_cash_tf").textContent}*\n\n`;
+laporan += `*Total Uang Keseluruhan:* *${formatRibuan(totalUangKeseluruhan)}*\n\n`;
+laporan += `*Total TF:* *${formatRibuan(totalTF)}*\n\n`;
+laporan += `*Total Uang Cash Keseluruhan:* *${formatRibuan(totalCash)}*\n\n`;
+
 
 
 

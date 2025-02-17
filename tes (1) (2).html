@@ -220,9 +220,9 @@ laporan += `*Rincian Pembayaran*\n`;
 laporan += `Cash: *${document.getElementById("count_cash").textContent}*\n`;
 laporan += `TF: *${document.getElementById("count_tf").textContent}*\n`;
 laporan += `Cash+TF: *${document.getElementById("count_cash_tf").textContent}*\n\n`;
-laporan += `Total Uang Keseluruhan: *${document.getElementById("total_uang_keseluruhan").value}*\n\n`;
-laporan += `Total TF: *${document.getElementById("total_tf").value}*\n\n`;
-laporan += `Total Uang Cash Keseluruhan: *${document.getElementById("total_cash").value}*\n\n`;
+laporan += `Total Uang Keseluruhan: *${formatRibuan(document.getElementById("total_uang_keseluruhan").value)}*\n\n`;
+laporan += `Total TF: *${formatRibuan(document.getElementById("total_tf").value)}*\n\n`;
+laporan += `Total Uang Cash Keseluruhan: *${formatRibuan(document.getElementById("total_cash").value)}*\n\n`;
 
 
     if (!laporan.trim()) {

@@ -209,9 +209,11 @@ let tahun = tanggalObj.getFullYear();
    //         }
    //     }
 
-        // Fungsi untuk menambahkan "K" setelah angka
+        // Fungsi untuk mengubah angka ke ribuan tanpa angka nol yang tidak perlu dan menambahkan "K"
 function formatRibuan(angka) {
-    return (angka / 1000) + "K";
+    let hasil = (angka / 1000).toFixed(3); // Konversi ke ribuan dengan 3 desimal
+    hasil = hasil.replace(/^0+|\.+0+$/g, ""); // Hapus nol di depan dan nol setelah titik
+    return hasil + "K"; // Tambahkan "K" setelah angka
 }
 
 // Menambahkan total pembayaran dengan angka dalam format tebal (*)

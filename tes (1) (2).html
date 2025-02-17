@@ -86,6 +86,9 @@
     </div>
     
 <script>
+    function formatRibuan(angka) {
+    return angka === 0 ? "0K" : (angka >= 1 ? (angka / 1) + "K" : angka);
+    }
     function kirimWhatsAppGrup() {
     // Ambil nilai tanggal dari input
     let tanggalInput = document.getElementById("tanggal").value;

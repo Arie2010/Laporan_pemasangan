@@ -115,6 +115,14 @@
     // Gunakan tanggal yang telah diformat di laporan
     let laporan = `*Laporan Pemasangan*\n*${formattedTanggal}*\n\n`;
 
+        // **Tambahkan validasi pemasanganItems di sini**
+    let pemasanganItems = document.getElementsByClassName("pemasangan-item");
+
+    if (pemasanganItems.length === 0) {
+        alert("Tidak ada data pemasangan! Pastikan ada elemen dengan class 'pemasangan-item'.");
+        return;
+    }
+
         
       //  let tanggal = document.getElementById("tanggal").value;
        // let pemasanganItems = document.getElementsByClassName("pemasangan-item");

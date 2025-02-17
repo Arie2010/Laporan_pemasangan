@@ -135,6 +135,8 @@
         };
         
         let totalBayaran = 0;
+        let nomorPemasangan = 1; // Inisialisasi nomor pemasangan
+        
         
         for (let item of pemasanganItems) {
             let jenisPaket = item.querySelector(".jenis_paket").value;
@@ -164,6 +166,9 @@
     laporan += `   *No HP*: ${noHp}\n`;
     laporan += `   *Bayaran*: ${bayaran}\n`;
     laporan += `   *Jenis Pembayaran*: ${jenisPembayaran}\n\n`;
+
+    nomorPemasangan++; // Tambahkan nomor untuk pemasangan berikutnya
+        
         }
 
         // Tambahkan total bayaran di bagian akhir laporan

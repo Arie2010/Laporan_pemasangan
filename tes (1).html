@@ -161,7 +161,7 @@ let totalCash = 0;
     } else if (jenisPembayaran === "cash") {
         totalCash += bayaran;
     }
-    }
+        }
 
             laporan += `*Paket ${jenisPaket}*\n`;
     laporan += `*Team: ${namaTeam}*\n\n`;
@@ -257,14 +257,14 @@ laporan += `*Total Uang Cash Keseluruhan:* *${formatRibuan(totalCash)}*\n\n`;
 
         // Membuka WhatsApp dengan pesan yang sudah disiapkan
        let groupLink = "https://wa.me/?text=" + encodeURIComponent(laporan);    
-   // console.log("WhatsApp Link:", groupLink);
-// alert("Cek Link WhatsApp: " + groupLink);
+    console.log("WhatsApp Link:", groupLink);
+ alert("Cek Link WhatsApp: " + groupLink);
     
-   // setTimeout(() => {
-  //  window.location.href = groupLink;
-// }, 500);
+    setTimeout(() => {
+    window.location.href = groupLink;
+ }, 500);
     
-        window.open(groupLink, "_blank");
+  //      window.open(groupLink, "_blank");
     }
 </script>
     

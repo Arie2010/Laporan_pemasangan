@@ -171,7 +171,15 @@ if (ipRouter) {
             //   `   *IP ONU*: ${ipOnu}\n` +
              //   `   *IP Router*: ${ipRouter}\n` +
 
-            paketData[jenisPaket].push(`*Team: ${namaTeam}*\n\n${pemasanganDetail}`);
+            if (!paketData[jenisPaket]) {
+    paketData[jenisPaket] = [];
+}
+
+// Simpan data pemasangan dengan format paket ditampilkan sebelum setiap tim
+paketData[jenisPaket].push(`*${jenisPaket}*\n\n*Team: ${namaTeam}*\n\n${pemasanganDetail}`);
+            
+
+           // paketData[jenisPaket].push(`*Team: ${namaTeam}*\n\n${pemasanganDetail}`);
         }
 
         // Menyusun laporan berdasarkan jenis paket

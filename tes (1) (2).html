@@ -149,11 +149,11 @@ let tahun = tanggalObj.getFullYear();
             let radioSignal = item.querySelector(".radio_signal").value;
             let alamat = item.querySelector(".alamat").value;
             let noHp = item.querySelector(".no_hp").value;
-            let bayaran = parseFloat(item.querySelector(".bayaran").value) || 0; // Konversi ke angka
+            let bayaran = parseFloat(item.querySelector(".bayaran").value) || 0; // Ambil nilai bayaran
             let jenisPembayaran = item.querySelector(".jenis_pembayaran").value;
 
-            totalBayaran += bayaran; // Menambahkan ke total pembayaran
-
+            totalBayaran += bayaran; // Tambahkan ke total
+            
             laporan += `*Paket ${jenisPaket}*\n`;
     laporan += `*Team: ${namaTeam}*\n\n`;
     laporan += `1. Nama: ${nama}\n`;
@@ -165,7 +165,7 @@ let tahun = tanggalObj.getFullYear();
     laporan += `   Radio/Signal: ${radioSignal}\n`;
     laporan += `   Alamat: ${alamat}\n`;
     laporan += `   No HP: ${noHp}\n`;
-    laporan += `   *Bayaran: ${bayaran}*\n`;
+    laporan += `   *Bayaran: ${formatRibuan(bayaran)}*\n`; // Format bayaran pakai "K"
     laporan += `   *Jenis Pembayaran: ${jenisPembayaran}*\n\n`;
 
     nomorPemasangan++; // Tambahkan nomor untuk pemasangan berikutnya

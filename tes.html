@@ -313,8 +313,13 @@ laporan += `Total Uang Cash Keseluruhan: *${formatRibuan(document.getElementById
             let countCash = 0, countTF = 0, countCashTF = 0;
             let totalCash = 0, totalTF = 0, totalKeseluruhan = 0;
 
-            for (let item of pemasanganItems) {
-                let jenisPembayaran = item.querySelector(".jenis_pembayaran").value;
+            // Menyusun rincian pembayaran
+let rincianPembayaran = "Rincian pembayaran:\n";
+for (let item of pemasanganItems) {
+    let jenisPembayaran = item.querySelector(".jenis_pembayaran").value;
+    rincianPembayaran += `- ${jenisPembayaran}\n`;
+}
+
                 let bayaran = parseInt(item.querySelector(".bayaran").value) || 0;
 
                 totalKeseluruhan += bayaran;

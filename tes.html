@@ -236,6 +236,19 @@ laporan += `Total Uang Keseluruhan: *${formatRibuan(document.getElementById("tot
 laporan += `Total TF: *${formatRibuan(document.getElementById("total_tf").value)}*\n\n`;
 laporan += `Total Uang Cash Keseluruhan: *${formatRibuan(document.getElementById("total_cash").value)}*\n\n`;
 
+        // Menyusun rincian pembayaran per pemasangan dengan nomor urut
+let rincianPembayaran = "*Rincian Pembayaran:*\n";
+let index = 1;
+for (let item of pemasanganItems) {
+    let jenisPembayaran = item.querySelector(".jenis_pembayaran").value;
+    rincianPembayaran += `${index}. ${jenisPembayaran}\n`;
+    index++;
+}
+
+// Tambahkan rincian pembayaran ke dalam laporan
+laporan += rincianPembayaran + "\n";
+        
+
 
     if (!laporan.trim()) {
     alert("Laporan kosong! Pastikan semua data diisi.");

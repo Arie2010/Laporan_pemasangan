@@ -226,9 +226,9 @@ let totalUangKeseluruhan = parseFloat(document.getElementById("total_uang_keselu
 let totalTF = parseFloat(document.getElementById("total_tf").value.trim()) || 0;
 let totalCash = parseFloat(document.getElementById("total_cash").value.trim()) || 0;
 
-        // Menambahkan total pembayaran dengan angka dalam format tebal (*)
-laporan += `Total Pemasangan: *${pemasanganItems.length}*\n\n`;
-laporan += `*Rincian Pembayaran*\n`;
+        // Menambahkan total pemasangan
+laporan += `Total Pemasangan: *${totalPemasangan}*\n\n`;
+laporan += `*Rincian Pembayaran:*\n${rincianPembayaran}\n`;
 laporan += `Cash: *${document.getElementById("count_cash").textContent}*\n`;
 laporan += `TF: *${document.getElementById("count_tf").textContent}*\n`;
 laporan += `Cash+TF: *${document.getElementById("count_cash_tf").textContent}*\n\n`;
@@ -237,16 +237,9 @@ laporan += `Total TF: *${formatRibuan(document.getElementById("total_tf").value)
 laporan += `Total Uang Cash Keseluruhan: *${formatRibuan(document.getElementById("total_cash").value)}*\n\n`;
 
         // Menyusun rincian pembayaran per pemasangan dengan nomor urut
-let rincianPembayaran = "*Rincian Pembayaran:*\n";
-let index = 1;
-for (let item of pemasanganItems) {
-    let jenisPembayaran = item.querySelector(".jenis_pembayaran").value;
-    rincianPembayaran += `${index}. ${jenisPembayaran}\n`;
-    index++;
-}
 
 // Tambahkan rincian pembayaran ke dalam laporan
-laporan += rincianPembayaran + "\n";
+//laporan += rincianPembayaran + "\n";
         
 
 

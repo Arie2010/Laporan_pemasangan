@@ -142,6 +142,7 @@ let tahun = tanggalObj.getFullYear();
         
         let totalBayaran = 0;
         let nomorPemasangan = 1; // Inisialisasi nomor pemasangan
+        let rincianPembayaran = new Set();
         
         
        for (let item of pemasanganItems) {
@@ -160,7 +161,12 @@ let tahun = tanggalObj.getFullYear();
 
 
             totalBayaran += bayaran;
-        rincianPembayaran.add(jenisPembayaran);
+
+        // Pastikan hanya menambahkan jika ada nilai
+        if (jenisPembayaran && jenisPembayaran.trim() !== "") {
+            rincianPembayaran.add(jenisPembayaran);
+        }
+
             
             laporan += `*Paket ${jenisPaket}*\n`;
         laporan += `*Team: ${namaTeam}*\n\n`;
@@ -179,10 +185,14 @@ let tahun = tanggalObj.getFullYear();
 
     laporan += `Total Pemasangan: *${pemasanganItems.length}*\n\n`;
     laporan += `*Rincian Pembayaran*\n`;
-    
-    rincianPembayaran.forEach(jenis => {
-        laporan += `- ${jenis}\n`;
-    });
+
+    if (rincianPembayaran.size > 0) {
+        rincianPembayaran.forEach(jenis => {
+            laporan += `- ${jenis}\n`;
+        });
+    } else {
+        laporan += `Tidak ada pembayaran tercatat.\n`;
+    }
 
 
         // Tambahkan total bayaran di bagian akhir laporan

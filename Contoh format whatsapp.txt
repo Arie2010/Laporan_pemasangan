@@ -1,0 +1,39 @@
+*Laporan Pemasangan*
+*Selasa, 18.Februari.2025*
+
+*Paket Ftth Subsidi*
+*Team: Test*
+
+1. Nama: Regist
+   ID Member: IR1.01
+   IP ONU: 10.15.10.2
+   Radio/Signal: Olt base
+   Alamat: Island
+   No HP: 0123456789
+   *Bayaran: 0*
+   *Jenis Pembayaran: Cash*
+
+*Paket Ftth Subsidi*
+*Team: Test web*
+
+2. Nama: Regist
+   ID Member: IR1.02
+   IP Router: 192.168.1.1
+   Radio/Signal: Tarikan box
+   Alamat: Island
+   No HP: 0987654321
+   *Bayaran: 0*
+   *Jenis Pembayaran: TF*
+
+Total Pemasangan: *2*
+
+*Rincian Pembayaran*
+1. Cash
+2. TF
+
+
+Total Uang Keseluruhan: *0*
+
+Total TF: *0*
+
+Total Uang Cash Keseluruhan: *0*

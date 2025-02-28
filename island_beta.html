@@ -187,9 +187,12 @@ let tahun = tanggalObj.getFullYear();
     laporan += `*Rincian Pembayaran*\n`;
 
     if (rincianPembayaran.size > 0) {
-        rincianPembayaran.forEach(jenis => {
-            laporan += `- ${jenis}\n`;
-        });
+    let nomorRincian = 1;
+    rincianPembayaran.forEach(jenis => {
+        laporan += `${nomorRincian}. ${jenis}\n`;
+        nomorRincian++;
+    });
+}
     } else {
         laporan += `Tidak ada pembayaran tercatat.\n`;
     }

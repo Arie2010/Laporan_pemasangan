@@ -46,7 +46,7 @@
             position: absolute;
             top: 5px;
             right: 5px;
-            background: red;
+            background: none;
             color: white;
             border: none;
             border-radius: 50%;
@@ -86,63 +86,184 @@
     </div>
     
 <script>
+    function formatRibuan(angka) {
+    return angka === 0 ? "0K" : (angka >= 1 ? (angka / 1) + "K" : angka);
+    }
     function kirimWhatsAppGrup() {
-        let tanggal = document.getElementById("tanggal").value;
-        let pemasanganItems = document.getElementsByClassName("pemasangan-item");
-        let laporan = `*Laporan Pemasangan*\n*Minggu, ${tanggal}*\n\n`;
+    // Ambil nilai tanggal dari input
+    let tanggalInput = document.getElementById("tanggal").value;
+    if (!tanggalInput) {
+        alert("Tanggal belum diisi!");
+        return; // Hentikan fungsi jika tanggal kosong
+    }
+
+    let tanggalObj = new Date(tanggalInput);
+    if (isNaN(tanggalObj.getTime())) {
+        alert("Format tanggal tidak valid!");
+        return; // Hentikan fungsi jika tanggal tidak valid
+    }
+
+    // Array nama hari dan bulan
+let namaHari = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+let namaBulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+
+// Ambil nama hari, tanggal, nama bulan, dan tahun
+let hari = namaHari[tanggalObj.getDay()];
+let tanggal = tanggalObj.getDate();
+let bulan = namaBulan[tanggalObj.getMonth()]; // Mengambil nama bulan dari array
+let tahun = tanggalObj.getFullYear();
+
+    // Format tanggal menjadi Hari, tanggal.bulan.tahun
+    let formattedTanggal = `${hari}, ${tanggal}.${bulan}.${tahun}`;
+
+    // Gunakan tanggal yang telah diformat di laporan
+    let laporan = `*Laporan Pemasangan*\n*${formattedTanggal}*\n\n`;
+
+        // **Tambahkan validasi pemasanganItems di sini**
+    let pemasanganItems = document.getElementsByClassName("pemasangan-item");
+
+    if (pemasanganItems.length === 0) {
+        alert("Tidak ada data pemasangan! Pastikan ada elemen dengan class 'pemasangan-item'.");
+        return;
+    }
+
+     //   let nomorPemasangan = 1; // Inisialisasi nomor urut
+
+        
+      //  let tanggal = document.getElementById("tanggal").value;
+       // let pemasanganItems = document.getElementsByClassName("pemasangan-item");
+      //  let laporan = `*Laporan Pemasangan*\n*Minggu, ${tanggal}*\n\n`;
 
         let paketData = {
             "Ftth Subsidi": [],
             "Ftth Non Subsidi": [],
             "Paket UpTo Kolektif": []
         };
+        
+        let totalBayaran = 0;
+        let nomorPemasangan = 1; // Inisialisasi nomor pemasangan
+        
+        
+       for (let item of pemasanganItems) {
+        let jenisPaket = item.querySelector(".jenis_paket").value;
+        let namaTeam = item.querySelector(".nama_team").value;
+        let nama = item.querySelector(".nama").value;
+        let idMember = item.querySelector(".id_member").value;
+        let ipOnu = item.querySelector(".ip_onu").value;
+        let ipRouter = item.querySelector(".ip_router").value;
+        let radioSignal = item.querySelector(".radio_signal").value;
+        let alamat = item.querySelector(".alamat").value;
+        let noHp = item.querySelector(".no_hp").value;
+        let bayaranInput = item.querySelector(".bayaran").value.trim();
+        let bayaran = bayaranInput ? parseFloat(bayaranInput) : 0;
+        let jenisPembayaran = item.querySelector(".jenis_pembayaran").value;
 
-        for (let item of pemasanganItems) {
-            let jenisPaket = item.querySelector(".jenis_paket").value;
-            let namaTeam = item.querySelector(".nama_team").value;
-            let nama = item.querySelector(".nama").value;
-            let idMember = item.querySelector(".id_member").value;
-            let ipOnu = item.querySelector(".ip_onu").value;
-            let ipRouter = item.querySelector(".ip_router").value;
-            let radioSignal = item.querySelector(".radio_signal").value;
-            let alamat = item.querySelector(".alamat").value;
-            let noHp = item.querySelector(".no_hp").value;
-            let bayaran = item.querySelector(".bayaran").value || 0;
-            let jenisPembayaran = item.querySelector(".jenis_pembayaran").value;
 
-            let pemasanganDetail = 
-                `1. *Nama*: ${nama}\n` +
-                `   *ID Member*: ${idMember}\n` +
-                `   *IP ONU*: ${ipOnu}\n` +
-                `   *IP Router*: ${ipRouter}\n` +
-                `   *Radio/Signal*: ${radioSignal}\n` +
-                `   *Alamat*: ${alamat}\n` +
-                `   *No HP*: ${noHp}\n` +
-                `   *Bayaran*: ${bayaran}\n` +
-                `   *Jenis Pembayaran*: ${jenisPembayaran}\n`;
+            totalBayaran += bayaran;
+        rincianPembayaran.add(jenisPembayaran);
+            
+            laporan += `*Paket ${jenisPaket}*\n`;
+        laporan += `*Team: ${namaTeam}*\n\n`;
+        laporan += `${nomorPemasangan}. Nama: ${nama}\n`;
+        laporan += `   ID Member: ${idMember}\n`;
+        if (ipOnu) laporan += `   IP ONU: ${ipOnu}\n`;
+        if (ipRouter) laporan += `   IP Router: ${ipRouter}\n`;
+        laporan += `   Radio/Signal: ${radioSignal}\n`;
+        laporan += `   Alamat: ${alamat}\n`;
+        laporan += `   No HP: ${noHp}\n`;
+        laporan += `   *Bayaran: ${bayaran}*\n`;
+        laporan += `   *Jenis Pembayaran: ${jenisPembayaran}*\n\n`;    
 
-            paketData[jenisPaket].push(`*Team: ${namaTeam}*\n${pemasanganDetail}`);
-        }
+    nomorPemasangan++;
+    }
+
+    laporan += `Total Pemasangan: *${pemasanganItems.length}*\n\n`;
+    laporan += `*Rincian Pembayaran*\n`;
+    
+    rincianPembayaran.forEach(jenis => {
+        laporan += `- ${jenis}\n`;
+    });
+
+
+        // Tambahkan total bayaran di bagian akhir laporan
+// laporan += `*Total Bayaran Keseluruhan:* ${totalBayaran}\n`;
+
+   //         let pemasanganDetail = 
+  //              `1. *Nama*: ${nama}\n` +
+  //              `   *ID Member*: ${idMember}\n`;//+
+                
+                // Hanya menampilkan salah satu dari IP ONU atau IP Router, tergantung mana yang diis
+  //          if (ipOnu) {
+//    pemasanganDetail += `   *IP ONU*: ${ipOnu}\n`;
+//}
+//if (ipRouter) {
+//    pemasanganDetail += `   *IP Router*: ${ipRouter}\n`;
+//}
+
+                
+          //  pemasanganDetail += 
+     //           `   *Radio/Signal*: ${radioSignal}\n` +
+   //             `   *Alamat*: ${alamat}\n` +
+   //             `   *No HP*: ${noHp}\n` +
+   //             `   *Bayaran*: ${bayaran}\n` +
+    //            `   *Jenis Pembayaran*: ${jenisPembayaran}\n`;
+            //}
+
+            //   `   *IP ONU*: ${ipOnu}\n` +
+             //   `   *IP Router*: ${ipRouter}\n` +
+
+     //       paketData[jenisPaket].push(`*Team: ${namaTeam}*\n\n${pemasanganDetail}`);
+  //      }
 
         // Menyusun laporan berdasarkan jenis paket
-        for (let [paket, data] of Object.entries(paketData)) {
-            if (data.length > 0) {
-                laporan += `*Paket ${paket}*\n${data.join("\n")}\n`;
-            }
-        }
+   //     for (let [paket, data] of Object.entries(paketData)) {
+   //        if (data.length > 0) {
+     //           laporan += `*Paket ${paket}*\n${data.join("\n")}\n`;
+   //         }
+   //     }
 
-        // Menambahkan ringkasan total pemasangan dan pembayaran
-        laporan += `\n*Total Pemasangan:* ${pemasanganItems.length}\n\n`;
-        laporan += `*Rincian Pembayaran*\n`;
-        laporan += `Cash: ${document.getElementById("count_cash").textContent}\n`;
-        laporan += `TF: ${document.getElementById("count_tf").textContent}\n`;
-        laporan += `Cash+TF: ${document.getElementById("count_cash_tf").textContent}\n\n`;
-        laporan += `*Total Uang Keseluruhan:* ${document.getElementById("total_uang_keseluruhan").value}\n`;
-        laporan += `*Total TF:* ${document.getElementById("total_tf").value}\n`;
-        laporan += `*Total Uang Cash Keseluruhan:* ${document.getElementById("total_cash").value}\n`;
+        // Fungsi untuk menambahkan "K" setelah angka
+function formatRibuan(angka) {
+    if (angka >= 1) {
+        return (angka / 1) + "K"; // Contoh: 300000 → 300K
+    }
+    return angka.toString(); // Jika kurang dari 1000, tetap tampilkan angka asli
+}
+//         // Ambil total uang keseluruhan, total TF, dan total cash dari input HTML
+// let totalUangKeseluruhan = parseFloat(document.getElementById("total_uang_keseluruhan").value.trim()) || 0;
+// let totalTF = parseFloat(document.getElementById("total_tf").value.trim()) || 0;
+// let totalCash = parseFloat(document.getElementById("total_cash").value.trim()) || 0;
+
+        // Menambahkan total pembayaran dengan angka dalam format tebal (*)
+// laporan += `Total Pemasangan: *${pemasanganItems.length}*\n\n`;
+// laporan += `*Rincian Pembayaran*\n`;
+// laporan += `Cash: *${document.getElementById("count_cash").textContent}*\n`;
+// laporan += `TF: *${document.getElementById("count_tf").textContent}*\n`;
+// laporan += `Cash+TF: *${document.getElementById("count_cash_tf").textContent}*\n\n`;
+laporan += `\nTotal Uang Keseluruhan: *${totalBayaran}*\n`;
+    laporan += `Total TF: *${document.getElementById("total_tf").value}*\n`;
+    laporan += `Total Uang Cash Keseluruhan: *${document.getElementById("total_cash").value}*\n`;
+
+
+
+    if (!laporan.trim()) {
+    alert("Laporan kosong! Pastikan semua data diisi.");
+    return;
+    }
+
+      //  console.log("Tanggal Input:", tanggalInput);
+// console.log("Tanggal yang Diformat:", formattedTanggal);
+        
 
         // Membuka WhatsApp dengan pesan yang sudah disiapkan
-        let groupLink = "https://wa.me/?text=" + encodeURIComponent(laporan);
+       let groupLink = "https://wa.me/?text=" + encodeURIComponent(laporan);    
+   // console.log("WhatsApp Link:", groupLink);
+// alert("Cek Link WhatsApp: " + groupLink);
+    
+   // setTimeout(() => {
+  //  window.location.href = groupLink;
+// }, 500);
+    
         window.open(groupLink, "_blank");
     }
 </script>

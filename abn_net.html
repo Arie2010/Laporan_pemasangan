@@ -153,6 +153,7 @@ let tahun = tanggalObj.getFullYear();
 //            let ipRouter = item.querySelector(".ip_router").value;
 //            let radioSignal = item.querySelector(".radio_signal").value;
             let alamat = item.querySelector(".alamat").value;
+            let japo = item.querySelector(".japo").value;
             let noHp = item.querySelector(".no_hp").value;
             let bayaranInput = item.querySelector(".bayaran").value.trim();
             let bayaran = bayaranInput ? parseFloat(bayaranInput) : 0; // Pastikan bayaran angka
@@ -170,6 +171,7 @@ let tahun = tanggalObj.getFullYear();
 
 //    laporan += `   Radio/Signal: ${radioSignal}\n`;
     laporan += `   Alamat: ${alamat}\n`;
+    laporan += `   Tanggal japo: ${japo}\n`;
     laporan += `   No HP: ${noHp}\n`;
     laporan += `   *Bayaran: ${formatRibuan(bayaran)}*\n`; 
     laporan += `   *Jenis Pembayaran: ${jenisPembayaran}*\n\n`;
@@ -282,6 +284,8 @@ laporan += `Total Uang Cash Keseluruhan: *${formatRibuan(document.getElementById
 
                 <label>Alamat:</label>
                 <textarea class="alamat"></textarea><br>
+                <label>Tanggal Japo:</label>
+                <input type="text" class="japo"><br>
                 <label>No HP:</label>
                 <input type="text" class="no_hp"><br>
                 <label>Bayaran:</label>

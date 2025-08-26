@@ -55,9 +55,71 @@
             font-size: 14px;
             cursor: pointer;
         }
+        /* Navbar */
+.navbar {
+    background: #222;
+    color: white;
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1000;
+}
+
+.menu-btn {
+    font-size: 24px;
+    cursor: pointer;
+    margin-right: 15px;
+}
+
+/* Sidebar */
+.sidebar {
+    height: 100%;
+    width: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    background-color: #111;
+    overflow-x: hidden;
+    transition: 0.3s;
+    padding-top: 60px;
+    z-index: 999;
+}
+
+.sidebar a {
+    padding: 10px 20px;
+    text-decoration: none;
+    color: white;
+    display: block;
+    transition: 0.2s;
+}
+
+.sidebar a:hover {
+    background-color: #575757;
+}
+
+.sidebar.open {
+    width: 250px;
+}
+
     </style>
 </head>
 <body>
+  <!-- Navbar -->
+<div class="navbar">
+    <span class="menu-btn" onclick="toggleSidebar()">☰</span>
+    <h3 style="margin:0;">ABN.Net</h3>
+</div>
+
+<!-- Sidebar -->
+<div id="sidebar" class="sidebar">
+    <a href="abn_net.html">📑 Laporan Pemasangan</a>
+    <a href="laporan_migrasi.html">🔄 Laporan Migrasi</a>
+</div>
+
     <div class="container">
         <h2>Laporan Pemasangan</h2>
         <h2>ABN.Net</h2>
@@ -338,5 +400,11 @@ laporan += `Total Uang Cash Keseluruhan: *${formatRibuan(document.getElementById
             document.getElementById("total_uang_keseluruhan").value = totalKeseluruhan;
         }
     </script>
+    <script>
+function toggleSidebar() {
+    document.getElementById("sidebar").classList.toggle("open");
+}
+</script>
+
 </body>
 </html>

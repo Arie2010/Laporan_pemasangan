@@ -1,0 +1,429 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laporan Pemasangan</title>
+    <style>
+        body {
+            background: rgba(0, 0, 0, 0.5);
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            margin: auto;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+        input, select, textarea, button {
+            width: 100%;
+            padding: 10px;
+            margin: 5px 0;
+            border: none;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .pemasangan-item {
+            border-bottom: 1px solid white;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
+            position: relative;
+        }
+        .remove-btn {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            background: none;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        /* Navbar */
+.navbar {
+  background: #222;
+  color: white;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+}
+
+/* Sidebar */
+.sidebar {
+  height: 100%;
+  width: 0;
+  position: fixed;
+  top: 0;
+  left: 0;
+  background-color: #111;
+  overflow-x: hidden;
+  transition: 0.3s;
+  padding-top: 60px;
+  z-index: 999;
+}
+
+.sidebar.open {
+  width: 250px;
+}
+
+/* Konten halaman agar tidak tertutup oleh navbar */
+.container {
+  padding-top: 80px; /* Mengatur jarak dari navbar */
+  background: rgba(255, 255, 255, 0.2);
+  padding: 20px;
+  border-radius: 10px;
+  width: 90%;
+  max-width: 600px;
+  margin: auto;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+}
+
+
+.sidebar a {
+    padding: 10px 20px;
+    text-decoration: none;
+    color: white;
+    display: block;
+    transition: 0.2s;
+}
+
+.sidebar a:hover {
+    background-color: #575757;
+}
+
+.sidebar.open {
+    width: 250px;
+}
+
+    </style>
+</head>
+<body>
+ <body>
+  <!-- Navbar -->
+  <div class="navbar">
+    <span class="menu-btn" onclick="toggleSidebar()">☰</span>
+    <h3 style="margin:0;">ABN.Net</h3>
+  </div>
+
+  <!-- Sidebar -->
+  <div id="sidebar" class="sidebar">
+    <a href="abn_net.html">📑 Laporan Pemasangan</a>
+    <a href="laporan_migrasi.html">🔄 Laporan Migrasi</a>
+  </div>
+
+  <!-- Konten -->
+  <div class="container">
+    <!-- Form dan Konten lainnya di sini -->
+  </div>
+</body>
+
+
+    <div class="container">
+        <h2>Laporan Pemasangan</h2>
+        <h2>ABN.Net</h2>
+        <label for="tanggal">Tanggal:</label>
+        <input type="date" id="tanggal" required><br>
+
+        <h3>Total Pemasangan: <span id="total_pemasangan">0</span></h3>
+        <div id="pemasangan-container"></div>
+
+        <button type="button" onclick="tambahPemasangan()">Tambah Pemasangan</button>
+
+        <h3>Rincian Pembayaran</h3>
+        <p>Cash: <span id="count_cash">0</span></p>
+        <p>TF: <span id="count_tf">0</span></p>
+        <p>Cash+TF: <span id="count_cash_tf">0</span></p>
+
+        <label for="total_uang_keseluruhan">Total Uang Keseluruhan:</label>
+        <input type="text" id="total_uang_keseluruhan" readonly><br>
+        <label for="total_tf">Total TF:</label>
+        <input type="text" id="total_tf" readonly><br>
+        <label for="total_cash">Total Cash:</label>
+        <input type="text" id="total_cash" readonly><br>
+
+        <button type="button" onclick="kirimWhatsAppGrup()">Kirim ke WhatsApp</button>
+        <p>Noted | Jika bagian input yang tidak diperlukan harap dikosongkan saja | Created ©ArieID2025</p>
+    </div>
+    
+<script>
+    function formatRibuan(angka) {
+    return angka === 0 ? "0K" : (angka >= 1 ? (angka / 1) + "K" : angka);
+    }
+    function kirimWhatsAppGrup() {
+    // Ambil nilai tanggal dari input
+    let tanggalInput = document.getElementById("tanggal").value;
+    if (!tanggalInput) {
+        alert("Tanggal belum diisi!");
+        return; // Hentikan fungsi jika tanggal kosong
+    }
+
+    let tanggalObj = new Date(tanggalInput);
+    if (isNaN(tanggalObj.getTime())) {
+        alert("Format tanggal tidak valid!");
+        return; // Hentikan fungsi jika tanggal tidak valid
+    }
+
+    // Array nama hari dan bulan
+let namaHari = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+let namaBulan = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+
+// Ambil nama hari, tanggal, nama bulan, dan tahun
+let hari = namaHari[tanggalObj.getDay()];
+let tanggal = tanggalObj.getDate();
+let bulan = namaBulan[tanggalObj.getMonth()]; // Mengambil nama bulan dari array
+let tahun = tanggalObj.getFullYear();
+
+    // Format tanggal menjadi Hari, tanggal.bulan.tahun
+    let formattedTanggal = `${hari}, ${tanggal}.${bulan}.${tahun}`;
+
+    // Gunakan tanggal yang telah diformat di laporan
+    let laporan = `*Laporan Pemasangan*\n*${formattedTanggal}*\n\n`;
+
+        // **Tambahkan validasi pemasanganItems di sini**
+    let pemasanganItems = document.getElementsByClassName("pemasangan-item");
+
+    if (pemasanganItems.length === 0) {
+        alert("Tidak ada data pemasangan! Pastikan ada elemen dengan class 'pemasangan-item'.");
+        return;
+    }
+
+     //   let nomorPemasangan = 1; // Inisialisasi nomor urut
+
+        
+      //  let tanggal = document.getElementById("tanggal").value;
+       // let pemasanganItems = document.getElementsByClassName("pemasangan-item");
+      //  let laporan = `*Laporan Pemasangan*\n*Minggu, ${tanggal}*\n\n`;
+
+        let paketData = {
+            "Ftth Subsidi": [],
+            "Ftth Non Subsidi": [],
+            "Paket UpTo Kolektif": []
+        };
+        
+        let totalBayaran = 0;
+        let nomorPemasangan = 1; // Inisialisasi nomor pemasanganp
+        
+        
+        for (let item of pemasanganItems) {
+            let jenisPaket = item.querySelector(".jenis_paket").value;
+            let namaTeam = item.querySelector(".nama_team").value;
+            let nama = item.querySelector(".nama").value;
+            let idPppoe = item.querySelector(".id_pppoe").value;
+//            let ipOnu = item.querySelector(".ip_onu").value;
+//            let ipRouter = item.querySelector(".ip_router").value;
+//            let radioSignal = item.querySelector(".radio_signal").value;
+            let alamat = item.querySelector(".alamat").value;
+            let japo = item.querySelector(".japo").value;
+            let noHp = item.querySelector(".no_hp").value;
+            let bayaranInput = item.querySelector(".bayaran").value.trim();
+            let bayaran = bayaranInput ? parseFloat(bayaranInput) : 0; // Pastikan bayaran angka
+            let jenisPembayaran = item.querySelector(".jenis_pembayaran").value;
+
+            totalBayaran += bayaran; // Tambahkan ke total
+            
+            laporan += `*Paket ${jenisPaket}*\n`;
+    laporan += `*Team: ${namaTeam}*\n\n`;
+    laporan += `${nomorPemasangan}. Nama: ${nama}\n`; // naikan nomor urut
+    laporan += `   ID PPPoE: ${idPppoe}\n`;
+
+//    if (ipOnu) laporan += `   IP ONU: ${ipOnu}\n`;
+//    if (ipRouter) laporan += `   IP Router: ${ipRouter}\n`;
+
+//    laporan += `   Radio/Signal: ${radioSignal}\n`;
+    laporan += `   Alamat: ${alamat}\n`;
+    laporan += `   Tanggal japo: ${japo}\n`;
+    laporan += `   No HP: ${noHp}\n`;
+    laporan += `   *Bayaran: ${formatRibuan(bayaran)}*\n`; 
+    laporan += `   *Jenis Pembayaran: ${jenisPembayaran}*\n\n`;
+
+    nomorPemasangan++; // Naikkan nomor urut
+    }
+
+        // Tambahkan total bayaran di bagian akhir laporan
+// laporan += `*Total Bayaran Keseluruhan:* ${totalBayaran}\n`;
+
+   //         let pemasanganDetail = 
+  //              `1. *Nama*: ${nama}\n` +
+  //              `   *ID Member*: ${idMember}\n`;//+
+                
+                // Hanya menampilkan salah satu dari IP ONU atau IP Router, tergantung mana yang diis
+  //          if (ipOnu) {
+//    pemasanganDetail += `   *IP ONU*: ${ipOnu}\n`;
+//}
+//if (ipRouter) {
+//    pemasanganDetail += `   *IP Router*: ${ipRouter}\n`;
+//}
+
+                
+          //  pemasanganDetail += 
+     //           `   *Radio/Signal*: ${radioSignal}\n` +
+   //             `   *Alamat*: ${alamat}\n` +
+   //             `   *No HP*: ${noHp}\n` +
+   //             `   *Bayaran*: ${bayaran}\n` +
+    //            `   *Jenis Pembayaran*: ${jenisPembayaran}\n`;
+            //}
+
+            //   `   *IP ONU*: ${ipOnu}\n` +
+             //   `   *IP Router*: ${ipRouter}\n` +
+
+     //       paketData[jenisPaket].push(`*Team: ${namaTeam}*\n\n${pemasanganDetail}`);
+  //      }
+
+        // Menyusun laporan berdasarkan jenis paket
+   //     for (let [paket, data] of Object.entries(paketData)) {
+   //        if (data.length > 0) {
+     //           laporan += `*Paket ${paket}*\n${data.join("\n")}\n`;
+   //         }
+   //     }
+
+        // Fungsi untuk menambahkan "K" setelah angka
+function formatRibuan(angka) {
+    if (angka >= 1) {
+        return (angka / 1) + "K"; // Contoh: 300000 → 300K
+    }
+    return angka.toString(); // Jika kurang dari 1000, tetap tampilkan angka asli
+}
+        // Ambil total uang keseluruhan, total TF, dan total cash dari input HTML
+let totalUangKeseluruhan = parseFloat(document.getElementById("total_uang_keseluruhan").value.trim()) || 0;
+let totalTF = parseFloat(document.getElementById("total_tf").value.trim()) || 0;
+let totalCash = parseFloat(document.getElementById("total_cash").value.trim()) || 0;
+
+        // Menambahkan total pembayaran dengan angka dalam format tebal (*)
+laporan += `Total Pemasangan: *${pemasanganItems.length}*\n\n`;
+laporan += `*Rincian Pembayaran*\n`;
+laporan += `Cash: *${document.getElementById("count_cash").textContent}*\n`;
+laporan += `TF: *${document.getElementById("count_tf").textContent}*\n`;
+laporan += `Cash+TF: *${document.getElementById("count_cash_tf").textContent}*\n\n`;
+laporan += `Total Uang Keseluruhan: *${formatRibuan(document.getElementById("total_uang_keseluruhan").value)}*\n\n`;
+laporan += `Total TF: *${formatRibuan(document.getElementById("total_tf").value)}*\n\n`;
+laporan += `Total Uang Cash Keseluruhan: *${formatRibuan(document.getElementById("total_cash").value)}*\n\n`;
+
+
+    if (!laporan.trim()) {
+    alert("Laporan kosong! Pastikan semua data diisi.");
+    return;
+    }
+
+      //  console.log("Tanggal Input:", tanggalInput);
+// console.log("Tanggal yang Diformat:", formattedTanggal);
+        
+
+        // Membuka WhatsApp dengan pesan yang sudah disiapkan
+       let groupLink = "https://wa.me/?text=" + encodeURIComponent(laporan);    
+   // console.log("WhatsApp Link:", groupLink);
+// alert("Cek Link WhatsApp: " + groupLink);
+    
+   // setTimeout(() => {
+  //  window.location.href = groupLink;
+// }, 500);
+    
+        window.open(groupLink, "_blank");
+    }
+</script>
+    
+    <script>
+        function tambahPemasangan() {
+            let container = document.getElementById("pemasangan-container");
+            let div = document.createElement("div");
+            div.classList.add("pemasangan-item");
+
+            div.innerHTML = `
+                <button class="remove-btn" onclick="hapusPemasangan(this)">X</button>
+                <label>Nama Team:</label>
+                <input type="text" class="nama_team"><br>
+                <label>Jenis Paket:</label>
+                <select class="jenis_paket">
+                    <option value="Ftth Subsidi">Ftth Subsidi</option>
+                    <option value="Ftth Non Subsidi">Ftth Non Subsidi</option>
+                    <option value="Paket UpTo Kolektif">Paket UpTo Kolektif</option>
+                </select><br>
+                <label>Nama:</label>
+                <input type="text" class="nama"><br>
+<label>ID PPPoE:</label>
+<input type="text" class="id_pppoe"><br>
+
+                <label>Alamat:</label>
+                <textarea class="alamat"></textarea><br>
+                <label>Tanggal Japo:</label>
+                <input type="text" class="japo"><br>
+                <label>No HP:</label>
+                <input type="text" class="no_hp"><br>
+                <label>Bayaran:</label>
+                <input type="number" class="bayaran" oninput="updatePembayaran()"><br>
+                <label>Jenis Pembayaran:</label>
+                <select class="jenis_pembayaran" onchange="updatePembayaran()">
+                    <option value="Cash">Cash</option>
+                    <option value="TF">TF</option>
+                    <option value="Cash+TF">Cash+TF</option>
+                </select><br>
+            `;
+
+            container.appendChild(div);
+            updatePembayaran();
+        }
+
+        function hapusPemasangan(button) {
+            button.parentElement.remove();
+            updatePembayaran();
+        }
+
+        function updatePembayaran() {
+            let pemasanganItems = document.getElementsByClassName("pemasangan-item");
+            let countCash = 0, countTF = 0, countCashTF = 0;
+            let totalCash = 0, totalTF = 0, totalKeseluruhan = 0;
+
+            for (let item of pemasanganItems) {
+                let jenisPembayaran = item.querySelector(".jenis_pembayaran").value;
+                let bayaran = parseInt(item.querySelector(".bayaran").value) || 0;
+
+                totalKeseluruhan += bayaran;
+
+                if (jenisPembayaran === "Cash") {
+                    countCash++;
+                    totalCash += bayaran;
+                } else if (jenisPembayaran === "TF") {
+                    countTF++;
+                    totalTF += bayaran;
+                } else if (jenisPembayaran === "Cash+TF") {
+                    countCashTF++;
+                }
+            }
+
+            document.getElementById("total_pemasangan").textContent = pemasanganItems.length;
+            document.getElementById("count_cash").textContent = countCash;
+            document.getElementById("count_tf").textContent = countTF;
+            document.getElementById("count_cash_tf").textContent = countCashTF;
+            document.getElementById("total_cash").value = totalCash;
+            document.getElementById("total_tf").value = totalTF;
+            document.getElementById("total_uang_keseluruhan").value = totalKeseluruhan;
+        }
+    </script>
+    <script>
+function toggleSidebar() {
+    document.getElementById("sidebar").classList.toggle("open");
+}
+</script>
+
+</body>
+</html>
